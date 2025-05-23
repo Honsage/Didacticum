@@ -1,0 +1,12 @@
+node_modules/
+dist/
+build/
+out/
+.cache/
+webpack.cache/
+.cache-loader/
+.vscode/
+.history/
+.idea/
+.env
+**/.docker/
