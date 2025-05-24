@@ -67,9 +67,12 @@ class AuthService {
 
     // Сохраняем нового пользователя
     const newUser: StoredUser = {
-      ...data,
+      email: data.email,
+      password: data.password,
+      firstName: data.firstName,
       lastName: data.lastName || '',
       middleName: data.middleName || '',
+      role: data.role || 'student', // Если роль не указана, по умолчанию student
       organization: data.organization || ''
     };
 
