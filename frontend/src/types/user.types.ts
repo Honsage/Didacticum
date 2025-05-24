@@ -1,15 +1,32 @@
 export type UserRole = 'student' | 'teacher' | 'admin';
 
-export interface UserProfile {
-    id: string;
+export interface BaseUser {
     email: string;
     firstName: string;
     lastName: string;
     middleName?: string;
-    role: UserRole;
     organization?: string;
-    avatar?: string;
+    role: UserRole;
 }
+
+export interface StoredUser extends BaseUser {
+    password: string;
+}
+
+export interface RegisterUser extends BaseUser {
+    password: string;
+    confirmPassword: string;
+}
+
+export interface UserProfile extends BaseUser {
+    id: string;
+}
+
+// Функция для преобразования StoredUser в UserProfile
+export const mapStoredUserToProfile = (user: StoredUser): UserProfile => ({
+    ...user,
+    id: btoa(user.email) // Используем email как основу для id
+});
 
 export interface UserPreferences {
     theme: 'light' | 'dark';
@@ -28,28 +45,5 @@ export interface UserState {
 
 export interface LoginCredentials {
     email: string;
-    password: string;
-}
-
-export interface RegisterUser {
-    email: string;
-    password: string;
-    firstName: string;
-    lastName: string;
-    middleName?: string;
-    role?: UserRole;
-    organization?: string;
-}
-
-export interface BaseUser {
-    email: string;
-    firstName: string;
-    lastName?: string;
-    middleName?: string;
-    organization?: string;
-    role: UserRole;
-}
-
-export interface StoredUser extends Required<BaseUser> {
     password: string;
 } 

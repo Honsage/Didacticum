@@ -1,5 +1,5 @@
 import { getCookie, setCookie, deleteCookie } from '../utils/cookie';
-import { RegisterUser, StoredUser } from '../types/user.types';
+import { RegisterUser, StoredUser, UserProfile, mapStoredUserToProfile } from '../types/user.types';
 
 interface LoginCredentials {
   email: string;
@@ -39,7 +39,7 @@ class AuthService {
     localStorage.setItem(this.USERS_STORAGE_KEY, JSON.stringify(users));
   }
 
-  async login(credentials: LoginCredentials): Promise<AuthResponse> {
+  async login(credentials: LoginCredentials): Promise<{ token: string; expiresIn: number; profile: UserProfile }> {
     // Имитация задержки сети
     await new Promise(resolve => setTimeout(resolve, 500));
 
@@ -58,13 +58,33 @@ class AuthService {
     const token = btoa(user.email + '_' + Date.now());
     setCookie(this.AUTH_COOKIE_NAME, token, { expires: this.TOKEN_EXPIRES_IN });
     
+    // Возвращаем токен и профиль пользователя
     return {
       token,
-      expiresIn: this.TOKEN_EXPIRES_IN
+      expiresIn: this.TOKEN_EXPIRES_IN,
+      profile: mapStoredUserToProfile(user)
     };
   }
 
-  async register(data: RegisterUser): Promise<AuthResponse> {
+  async getProfile(token: string): Promise<UserProfile | null> {
+    try {
+      // Декодируем email из токена
+      const decoded = atob(token);
+      const email = decoded.split('_')[0];
+      
+      const users = this.getStoredUsers();
+      const user = users.find(u => u.email === email);
+      
+      if (user) {
+        return mapStoredUserToProfile(user);
+      }
+    } catch (error) {
+      console.error('Error getting profile:', error);
+    }
+    return null;
+  }
+
+  async register(data: RegisterUser): Promise<{ token: string; expiresIn: number; profile: UserProfile }> {
     // Имитация задержки сети
     await new Promise(resolve => setTimeout(resolve, 500));
 
@@ -80,9 +100,9 @@ class AuthService {
       email: data.email,
       password: data.password,
       firstName: data.firstName,
-      lastName: data.lastName || '',
+      lastName: data.lastName,
       middleName: data.middleName || '',
-      role: data.role || 'student',
+      role: data.role,
       organization: data.organization || ''
     };
 
@@ -95,7 +115,8 @@ class AuthService {
     
     return {
       token,
-      expiresIn: this.TOKEN_EXPIRES_IN
+      expiresIn: this.TOKEN_EXPIRES_IN,
+      profile: mapStoredUserToProfile(newUser)
     };
   }
 

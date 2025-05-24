@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from '../../hooks/useDispatch';
-import { setToken } from '../../store/slices/user.slice';
+import { setToken, setProfile } from '../../store/slices/user.slice';
 import { authService } from '../../services/auth.service';
 import { RegisterUser } from '../../types/user.types';
 import SignupForm from '../../components/signup-form/signup-form';
@@ -23,7 +23,8 @@ const SignupPage: React.FC = () => {
     firstName: '',
     lastName: '',
     middleName: '',
-    organization: ''
+    organization: '',
+    role: 'student'
   });
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
@@ -42,8 +43,9 @@ const SignupPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const { token, expiresIn } = await authService.register(formData);
+      const { token, expiresIn, profile } = await authService.register(formData);
       dispatch(setToken({ token, expiresIn }));
+      dispatch(setProfile(profile));
       navigate('/');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Произошла ошибка при регистрации');

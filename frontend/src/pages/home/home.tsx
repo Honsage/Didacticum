@@ -56,6 +56,13 @@ const HomePage: React.FC = () => {
                                 <span className={headerStyles.userName}>
                                     {profile?.firstName}
                                 </span>
+                                <Link 
+                                    to="/profile" 
+                                    className={headerStyles.userAvatar}
+                                    title="Перейти в профиль"
+                                >
+                                    {profile?.firstName?.charAt(0).toUpperCase()}
+                                </Link>
                                 <button 
                                     onClick={handleLogout}
                                     className={headerStyles.logoutButton}
@@ -91,30 +98,32 @@ const HomePage: React.FC = () => {
                 </div>
             </div>
 
-            <div className={styles.search}>
-                <div className={styles.searchContent}>
-                    <SearchInput 
-                        onFocus={handleSearchFocus}
-                        isExpanded={isSearchFocused}
-                    />
-                </div>
-            </div>
-
             <main className={styles.main}>
-                <div className={styles.content}>
-                    <section className={styles.materials}>
+                <section className={styles.search}>
+                    <div className={styles.searchContent}>
+                        <SearchInput 
+                            onFocus={handleSearchFocus}
+                            isExpanded={isSearchFocused}
+                        />
+                    </div>
+                </section>
+
+                <section className={styles.materials}>
+                    <div className={styles.content}>
                         <h2 className={styles.sectionTitle}>
                             {HOME_PAGE_CONTENT.sections.popularMaterials}
                         </h2>
                         <div className={styles.grid}>
-                            {DEMO_MATERIALS.map(material => (
-                                <div key={material.id} className={styles.gridItem}>
-                                    <MaterialCard material={material} />
+                            {DEMO_MATERIALS.map((material, index) => (
+                                <div key={index} className={styles.gridItem}>
+                                    <MaterialCard 
+                                        material={material}
+                                    />
                                 </div>
                             ))}
                         </div>
-                    </section>
-                </div>
+                    </div>
+                </section>
             </main>
 
             <Footer />

@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from '../../hooks/useDispatch';
-import { setToken } from '../../store/slices/user.slice';
+import { setToken, setProfile } from '../../store/slices/user.slice';
 import { authService } from '../../services/auth.service';
 import LoginForm from '../../components/login-form/login-form';
 import Footer from '../../components/footer/footer';
@@ -40,8 +40,9 @@ const LoginPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const { token, expiresIn } = await authService.login(formData);
+      const { token, expiresIn, profile } = await authService.login(formData);
       dispatch(setToken({ token, expiresIn }));
+      dispatch(setProfile(profile));
       navigate('/');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Произошла ошибка при входе');
