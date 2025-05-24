@@ -1,0 +1,111 @@
+.form {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(19, 41, 75, 0.1);
+  width: 100%;
+  max-width: 480px;
+}
+
+.title {
+  color: #13294B;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.inputGroup {
+  margin-bottom: 1.5rem;
+}
+
+.inputGroup label {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: #444455;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.inputGroup input,
+.inputGroup select {
+  width: 100%;
+  height: 56px;
+  padding: 0 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1.125rem;
+  color: #444455;
+  transition: all 0.2s ease;
+  line-height: 1.5;
+  display: block;
+  box-sizing: border-box;
+  background-color: white;
+}
+
+.inputGroup input:focus,
+.inputGroup select:focus {
+  outline: none;
+  border-color: #5FB3EC;
+  box-shadow: 0 0 0 3px rgba(95, 179, 236, 0.2);
+}
+
+.inputGroup input::placeholder {
+  color: #8888aa;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 1rem;
+  background-color: #13294B;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.submitButton:hover {
+  background-color: #1a3a6c;
+}
+
+.submitButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.loginLink {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  color: #444455;
+}
+
+.loginLink a {
+  color: #5FB3EC;
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 0.5rem;
+}
+
+.loginLink a:hover {
+  text-decoration: underline;
+}
+
+.error {
+  background-color: #fff2f2;
+  border: 1px solid #ffcdd2;
+  color: #d32f2f;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.required {
+  color: #d32f2f;
+  margin-left: 2px;
+} 

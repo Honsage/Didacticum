@@ -65,7 +65,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
 
       <div className={styles.registerLink}>
         Еще нет аккаунта?{' '}
-        <Link to="/register">Зарегистрируйтесь</Link>
+        <Link to="/signup">Зарегистрируйтесь</Link>
       </div>
     </form>
   );
