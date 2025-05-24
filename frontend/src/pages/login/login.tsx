@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { authService } from '../../services/auth.service';
 import LoginForm from '../../components/login-form/login-form';
 import Footer from '../../components/footer/footer';
+import Header from '../../components/header/header';
 import styles from './login.module.css';
 
 interface LoginFormData {
@@ -63,12 +64,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className={styles.loginContainer}>
-      <header className={styles.header}>
-        <div className={styles.logo}>
-          <img src="/logo.svg" alt="Didacticum" />
-          <span>Didacticum</span>
-        </div>
-      </header>
+      <Header minimal />
 
       <main className={styles.main}>
         <LoginForm

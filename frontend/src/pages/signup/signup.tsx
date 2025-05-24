@@ -5,6 +5,7 @@ import { authService } from '../../services/auth.service';
 import { RegisterUser } from '../../types/user.types';
 import SignupForm from '../../components/signup-form/signup-form';
 import Footer from '../../components/footer/footer';
+import Header from '../../components/header/header';
 import styles from './signup.module.css';
 
 interface SignupFormState extends RegisterUser {
@@ -57,12 +58,7 @@ const SignupPage: React.FC = () => {
 
   return (
     <div className={styles.signupContainer}>
-      <header className={styles.header}>
-        <div className={styles.logo}>
-          <img src="/logo.svg" alt="Didacticum" />
-          <span>Didacticum</span>
-        </div>
-      </header>
+      <Header minimal />
 
       <main className={styles.main}>
         <SignupForm
