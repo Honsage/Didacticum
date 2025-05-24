@@ -1,0 +1,202 @@
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #F5F5F5;
+}
+
+.main {
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.profileCard {
+    background: white;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 1000px;
+    height: calc(100vh - 160px); /* Фиксированная высота с учетом хедера и футера */
+    box-shadow: 0 4px 6px rgba(19, 41, 75, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.profileHeader {
+    padding: 2rem;
+    border-bottom: 1px solid #CCCCCC;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.userInfo {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.userDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.userName {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #13294B;
+    margin: 0;
+}
+
+.userEmail {
+    font-size: 1rem;
+    color: #444455;
+    margin: 0;
+}
+
+.editButton {
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.editButton:hover {
+    background-color: rgba(19, 41, 75, 0.05);
+}
+
+.editButton img {
+    width: 24px;
+    height: 24px;
+}
+
+.tabs {
+    padding: 0 2rem;
+    border-bottom: 1px solid #CCCCCC;
+    display: flex;
+    gap: 2rem;
+}
+
+.tab {
+    padding: 1rem 0;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    color: #444455;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.2s ease;
+}
+
+.tab:hover {
+    color: #13294B;
+}
+
+.activeTab {
+    color: #13294B;
+    font-weight: 500;
+}
+
+.activeTab::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #5FB3EC;
+}
+
+.content {
+    flex: 1;
+    padding: 2rem;
+    padding-bottom: 2rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.materialsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 2rem;
+    align-items: start;
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 1rem;
+}
+
+.favoritesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 1rem;
+}
+
+.materialsGrid::-webkit-scrollbar,
+.favoritesGrid::-webkit-scrollbar {
+    width: 8px;
+}
+
+.materialsGrid::-webkit-scrollbar-track,
+.favoritesGrid::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.materialsGrid::-webkit-scrollbar-thumb,
+.favoritesGrid::-webkit-scrollbar-thumb {
+    background: #5FB3EC;
+    border-radius: 4px;
+}
+
+.headerButtons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.headerLink {
+    color: white;
+    text-decoration: none;
+    font-size: 1.3rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border: 2px solid white;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.headerLink:hover {
+    background: #5FB3EC;
+    border-color: #5FB3EC;
+}
+
+.headerButton {
+    background: none;
+    border: 2px solid white;
+    color: white;
+    padding: 0.5rem 1rem;
+    font-size: 1.3rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.headerButton:hover {
+    background: #5FB3EC;
+    border-color: #5FB3EC;
+} 
