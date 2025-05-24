@@ -13,7 +13,9 @@
 }
 
 .contentMinimal {
-    justify-content: flex-start;
+    max-width: none;
+    margin: 0;
+    padding: 0;
 }
 
 .logo {
@@ -22,6 +24,10 @@
     gap: 1rem;
     text-decoration: none;
     padding-left: 1rem;
+}
+
+.contentMinimal .logo {
+    padding-left: 2.5rem;
 }
 
 .logo img {
@@ -119,11 +125,7 @@
         font-size: 1.5rem;
     }
 
-    .link {
-        font-size: 1.5rem;
-    }
-
-    .authLink {
-        font-size: 1.25rem;
+    .contentMinimal .logo {
+        padding-left: 1rem;
     }
 } 
