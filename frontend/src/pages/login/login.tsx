@@ -5,7 +5,7 @@ import { authService } from '../../services/auth.service';
 import LoginForm from '../../components/login-form/login-form';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
-import styles from './login.module.css';
+import * as styles from './login.module.css';
 
 interface LoginFormData {
   email: string;

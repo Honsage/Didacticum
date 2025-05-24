@@ -45,12 +45,20 @@
     transition: transform 0.2s ease;
 }
 
+.searchCircle {
+    transition: stroke-width 0.2s ease;
+}
+
 .searchHandle {
     transition: d 0.2s ease;
 }
 
 .searchButton:hover .searchIcon {
     transform: scale(1.1);
+}
+
+.searchButton:hover .searchCircle {
+    stroke-width: 2.2;
 }
 
 .searchButton:hover .searchHandle {

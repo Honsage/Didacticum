@@ -6,7 +6,7 @@ import { RegisterUser } from '../../types/user.types';
 import SignupForm from '../../components/signup-form/signup-form';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
-import styles from './signup.module.css';
+import * as styles from './signup.module.css';
 
 interface SignupFormState extends RegisterUser {
   confirmPassword: string;

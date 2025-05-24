@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Material, MaterialType } from '../../types/material.types';
-import styles from './material-card.module.css';
+import * as styles from './material-card.module.css';
 
 interface MaterialCardProps {
     material: Material;

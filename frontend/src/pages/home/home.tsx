@@ -7,8 +7,8 @@ import Footer from '../../components/footer/footer';
 import { DEMO_MATERIALS } from '../../constants/demo/materials';
 import { MAIN_NAVIGATION, AUTH_NAVIGATION } from '../../constants/navigation';
 import { HOME_PAGE_CONTENT } from '../../constants/content/home';
-import headerStyles from '../../components/header/header.module.css';
-import styles from './home.module.css';
+import * as headerStyles from '../../components/header/header.module.css';
+import * as styles from './home.module.css';
 
 const HomePage: React.FC = () => {
     const navigate = useNavigate();

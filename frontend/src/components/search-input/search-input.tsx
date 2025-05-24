@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './search-input.module.css';
+import * as styles from './search-input.module.css';
 
 interface SearchInputProps {
     isExpanded?: boolean;

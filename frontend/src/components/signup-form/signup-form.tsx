@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { RegisterUser } from '../../types/user.types';
-import styles from './signup-form.module.css';
+import * as styles from './signup-form.module.css';
 
 interface SignupFormProps {
   formData: RegisterUser & {
