@@ -1,10 +1,11 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import * as styles from './header.module.css';
+import logoPath from '../../assets/logo/logo.svg';
 
 interface HeaderProps {
-    navItems?: ReactNode;
-    rightContent?: ReactNode;
+    navItems?: React.ReactNode;
+    rightContent?: React.ReactNode;
     minimal?: boolean;
 }
 
@@ -13,7 +14,7 @@ const Header: React.FC<HeaderProps> = ({ navItems, rightContent, minimal = false
         <header className={styles.header}>
             <div className={`${styles.content} ${minimal ? styles.contentMinimal : ''}`}>
                 <Link to="/" className={styles.logo}>
-                    <img src="/logo.svg" alt="Didacticum" />
+                    <img src={logoPath} alt="Didacticum" />
                     <span>Didacticum</span>
                 </Link>
                 {!minimal && (
