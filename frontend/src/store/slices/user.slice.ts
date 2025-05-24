@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UserProfile } from '../../types/user.types';
+import { authService } from '../../services/auth.service';
 
 interface AuthState {
     token: string | null;
@@ -16,12 +17,11 @@ const loadAuthFromStorage = (): AuthState => {
         const storedAuth = localStorage.getItem('auth');
         if (storedAuth) {
             const auth = JSON.parse(storedAuth);
-            // Проверяем валидность токена
             if (auth.expiresAt && Date.now() < auth.expiresAt) {
                 return auth;
             }
-            // Если токен истек, удаляем его из хранилища
             localStorage.removeItem('auth');
+            localStorage.removeItem('user_profile');
         }
     } catch (error) {
         console.error('Error loading auth from storage:', error);
@@ -29,9 +29,19 @@ const loadAuthFromStorage = (): AuthState => {
     return { token: null, expiresAt: null };
 };
 
+const loadProfileFromStorage = (): UserProfile | null => {
+    try {
+        const storedProfile = localStorage.getItem('user_profile');
+        return storedProfile ? JSON.parse(storedProfile) : null;
+    } catch (error) {
+        console.error('Error loading profile from storage:', error);
+        return null;
+    }
+};
+
 const initialState: UserState = {
     auth: loadAuthFromStorage(),
-    profile: null
+    profile: loadProfileFromStorage()
 };
 
 const userSlice = createSlice({
@@ -42,20 +52,27 @@ const userSlice = createSlice({
             const { token, expiresIn } = action.payload;
             const expiresAt = Date.now() + expiresIn * 1000;
             state.auth = { token, expiresAt };
-            // Сохраняем в localStorage
             localStorage.setItem('auth', JSON.stringify({ token, expiresAt }));
         },
         setProfile: (state, action: PayloadAction<UserProfile>) => {
             state.profile = action.payload;
+            localStorage.setItem('user_profile', JSON.stringify(action.payload));
         },
         logout: (state) => {
             state.auth = { token: null, expiresAt: null };
             state.profile = null;
-            // Очищаем localStorage
             localStorage.removeItem('auth');
+            localStorage.removeItem('user_profile');
+        },
+        loadProfile: (state) => {
+            const profile = loadProfileFromStorage();
+            if (profile) {
+                state.profile = profile;
+            }
         }
     }
 });
 
-export const { setToken, setProfile, logout } = userSlice.actions;
+export const { setToken, setProfile, logout, loadProfile } = userSlice.actions;
+
 export default userSlice.reducer; 
