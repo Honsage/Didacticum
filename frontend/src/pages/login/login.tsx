@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { useDispatch } from '../../hooks/useDispatch';
+import { setToken } from '../../store/slices/user.slice';
 import { authService } from '../../services/auth.service';
 import LoginForm from '../../components/login-form/login-form';
 import Footer from '../../components/footer/footer';
@@ -14,7 +15,7 @@ interface LoginFormData {
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState<LoginFormData>({
     email: '',
     password: ''
@@ -39,15 +40,15 @@ const LoginPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const token = await authService.login(formData);
-      login(token);
+      const { token, expiresIn } = await authService.login(formData);
+      dispatch(setToken({ token, expiresIn }));
       navigate('/');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Произошла ошибка при входе');
     } finally {
       setIsLoading(false);
     }
-  }, [formData, isLoading, login, navigate]);
+  }, [formData, isLoading, dispatch, navigate]);
 
   const handleKeyPress = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Enter' && !isLoading) {

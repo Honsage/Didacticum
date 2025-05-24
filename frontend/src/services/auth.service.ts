@@ -6,9 +6,15 @@ interface LoginCredentials {
   password: string;
 }
 
+interface AuthResponse {
+  token: string;
+  expiresIn: number;
+}
+
 class AuthService {
   private readonly AUTH_COOKIE_NAME = 'auth_token';
   private readonly USERS_STORAGE_KEY = 'mock_users';
+  private readonly TOKEN_EXPIRES_IN = 3600; // 1 час
 
   private getStoredUsers(): StoredUser[] {
     const usersJson = localStorage.getItem(this.USERS_STORAGE_KEY);
@@ -33,7 +39,7 @@ class AuthService {
     localStorage.setItem(this.USERS_STORAGE_KEY, JSON.stringify(users));
   }
 
-  async login(credentials: LoginCredentials): Promise<string> {
+  async login(credentials: LoginCredentials): Promise<AuthResponse> {
     // Имитация задержки сети
     await new Promise(resolve => setTimeout(resolve, 500));
 
@@ -50,11 +56,15 @@ class AuthService {
 
     // Генерация временного токена
     const token = btoa(user.email + '_' + Date.now());
-    setCookie(this.AUTH_COOKIE_NAME, token, { expires: 3600 });
-    return token;
+    setCookie(this.AUTH_COOKIE_NAME, token, { expires: this.TOKEN_EXPIRES_IN });
+    
+    return {
+      token,
+      expiresIn: this.TOKEN_EXPIRES_IN
+    };
   }
 
-  async register(data: RegisterUser): Promise<string> {
+  async register(data: RegisterUser): Promise<AuthResponse> {
     // Имитация задержки сети
     await new Promise(resolve => setTimeout(resolve, 500));
 
@@ -72,7 +82,7 @@ class AuthService {
       firstName: data.firstName,
       lastName: data.lastName || '',
       middleName: data.middleName || '',
-      role: data.role || 'student', // Если роль не указана, по умолчанию student
+      role: data.role || 'student',
       organization: data.organization || ''
     };
 
@@ -81,8 +91,12 @@ class AuthService {
 
     // Генерация временного токена
     const token = btoa(data.email + '_' + Date.now());
-    setCookie(this.AUTH_COOKIE_NAME, token, { expires: 3600 });
-    return token;
+    setCookie(this.AUTH_COOKIE_NAME, token, { expires: this.TOKEN_EXPIRES_IN });
+    
+    return {
+      token,
+      expiresIn: this.TOKEN_EXPIRES_IN
+    };
   }
 
   async logout(): Promise<void> {
