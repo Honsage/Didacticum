@@ -1,0 +1,20 @@
+:root {
+  /* Primary Colors */
+  --color-primary-dark: #13294B;    /* Dark blue - backgrounds, headings */
+  --color-primary-blue: #5fb3ec;    /* Blue - active elements */
+  --color-light-gray: #F5F5F5;      /* Light gray - block backgrounds */
+  --color-dark-gray: #444455;       /* Dark gray - text and accents */
+
+  /* Semantic Colors */
+  --color-background: var(--color-primary-dark);
+  --color-text: var(--color-dark-gray);
+  --color-heading: var(--color-primary-dark);
+  --color-active: var(--color-primary-blue);
+  --color-block-bg: var(--color-light-gray);
+
+  /* Component-specific Colors */
+  --color-button-primary: var(--color-primary-blue);
+  --color-button-text: white;
+  --color-input-border: var(--color-dark-gray);
+  --color-input-focus: var(--color-primary-blue);
+} 
