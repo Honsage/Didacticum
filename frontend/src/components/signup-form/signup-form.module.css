@@ -23,7 +23,7 @@
   display: block;
   margin-bottom: 0.75rem;
   color: #444455;
-  font-size: 1rem;
+  font-size: 1.125rem;
   font-weight: 500;
 }
 
@@ -117,7 +117,7 @@
 .loginLink {
   text-align: center;
   margin-top: 1.5rem;
-  font-size: 1rem;
+  font-size: 1.125rem;
   color: #444455;
 }
 

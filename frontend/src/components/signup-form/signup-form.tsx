@@ -46,6 +46,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
                     type="email"
                     value={formData.email}
                     onChange={e => onInputChange('email')(e.target.value)}
+                    placeholder="you@example.com"
                     required
                 />
             </div>
@@ -57,6 +58,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
                     type="text"
                     value={formData.firstName}
                     onChange={e => onInputChange('firstName')(e.target.value)}
+                    placeholder="Введите имя"
                     required
                 />
             </div>
@@ -68,6 +70,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
                     type="text"
                     value={formData.lastName}
                     onChange={e => onInputChange('lastName')(e.target.value)}
+                    placeholder="Введите фамилию"
                 />
             </div>
 
@@ -78,6 +81,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
                     type="text"
                     value={formData.middleName}
                     onChange={e => onInputChange('middleName')(e.target.value)}
+                    placeholder="Введите отчество"
                 />
             </div>
 
@@ -88,6 +92,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
                     type="text"
                     value={formData.organization}
                     onChange={e => onInputChange('organization')(e.target.value)}
+                    placeholder="Название организации"
                 />
             </div>
 
@@ -98,6 +103,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
                     type="password"
                     value={formData.password}
                     onChange={e => onInputChange('password')(e.target.value)}
+                    placeholder="Ваш пароль"
                     required
                 />
             </div>
@@ -109,6 +115,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
                     type="password"
                     value={formData.confirmPassword}
                     onChange={e => onInputChange('confirmPassword')(e.target.value)}
+                    placeholder="Подтвердите пароль"
                     required
                 />
             </div>
