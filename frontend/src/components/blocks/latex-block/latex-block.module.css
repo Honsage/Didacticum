@@ -1,0 +1,15 @@
+.latex {
+    font-family: 'Computer Modern', serif;
+    color: #13294B;
+}
+
+.display {
+    margin: 1em 0;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.inline {
+    display: inline;
+    margin: 0 0.2em;
+} 
