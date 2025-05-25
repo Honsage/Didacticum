@@ -5,6 +5,7 @@ import SignupPage from './pages/signup/signup';
 import HomePage from './pages/home/home';
 import ProfilePage from './pages/profile/profile';
 import ViewerPage from './pages/viewer/viewer';
+import { EditPage } from './pages/edit/edit';
 import NotFound from './pages/not-found/not-found';
 import ProtectedRoute from './components/protected-route/protected-route';
 import SearchPage from './pages/search/search';
@@ -22,6 +23,22 @@ export default function App() {
         element={
           <ProtectedRoute>
             <ProfilePage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/edit/:id" 
+        element={
+          <ProtectedRoute>
+            <EditPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/edit" 
+        element={
+          <ProtectedRoute>
+            <EditPage />
           </ProtectedRoute>
         } 
       />

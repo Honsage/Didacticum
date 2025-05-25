@@ -1,0 +1,200 @@
+.editPage {
+    display: grid;
+    grid-template-columns: 250px 1fr 250px;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+    background-color: #F5F5F5;
+    grid-template-areas:
+        "header header header"
+        "left main right"
+        "footer footer footer";
+}
+
+.header {
+    grid-area: header;
+    background-color: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    height: var(--header-height);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 32px;
+    width: auto;
+}
+
+.headerActions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.headerActions button {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: var(--surface-color);
+    color: var(--text-primary);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.headerActions button:hover {
+    background-color: var(--hover-color);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.footer {
+    grid-area: footer;
+    background-color: var(--surface-color);
+    border-top: 1px solid var(--border-color);
+    padding: 1rem;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.leftSidebar {
+    grid-area: left;
+    background-color: #13294B;
+    padding: 1.5rem;
+    position: fixed;
+    width: 250px;
+    height: calc(100vh - var(--header-height) - var(--footer-height));
+    overflow-y: auto;
+    top: var(--header-height);
+}
+
+.leftSidebar h2 {
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.leftSidebar hr {
+    border-color: rgba(255, 255, 255, 0.1);
+    margin-bottom: 1.5rem;
+}
+
+.rightSidebar {
+    grid-area: right;
+    background-color: white;
+    border-left: 1px solid #F5F5F5;
+    padding: 1.5rem;
+    position: fixed;
+    width: 250px;
+    height: calc(100vh - var(--header-height) - var(--footer-height));
+    overflow-y: auto;
+    top: var(--header-height);
+    right: 0;
+}
+
+.mainContent {
+    grid-area: main;
+    padding: 2rem;
+    margin: 0 250px;
+    min-height: calc(100vh - var(--header-height) - var(--footer-height));
+    background-color: #F5F5F5;
+}
+
+.toolButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.toolButtons button {
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #F5F5F5;
+    color: #444455;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.toolButtons button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.actionButton {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #13294B;
+    color: white;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+}
+
+.actionButton:hover {
+    background-color: #5fb3ec;
+}
+
+.titleInput {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    border: 1px solid #F5F5F5;
+    border-radius: 8px;
+    background-color: white;
+    color: #444455;
+    margin-bottom: 1rem;
+}
+
+.titleInput:focus {
+    outline: none;
+    border-color: #5fb3ec;
+}
+
+.descriptionInput {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    border: 1px solid #F5F5F5;
+    border-radius: 8px;
+    background-color: white;
+    color: #444455;
+    margin-bottom: 2rem;
+    min-height: 100px;
+    resize: vertical;
+}
+
+.descriptionInput:focus {
+    outline: none;
+    border-color: #5fb3ec;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-size: 1.2rem;
+    color: #444455;
+}
+
+.error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-size: 1.2rem;
+    color: red;
+} 

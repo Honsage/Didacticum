@@ -1,0 +1,293 @@
+.blocks {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.blockWrapper {
+    border: 1px solid #F5F5F5;
+    border-radius: 8px;
+    background-color: white;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.blockWrapper.dragging {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px dashed #5fb3ec;
+    opacity: 0.8;
+    background-color: #F5F5F5;
+}
+
+.blockContent {
+    padding: 1rem;
+}
+
+.blockControls {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.blockWrapper:hover .blockControls {
+    opacity: 1;
+}
+
+.dragHandle {
+    cursor: move;
+    padding: 0.25rem 0.5rem;
+    border: none;
+    background: none;
+    color: #444455;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.dragHandle:hover {
+    color: #5fb3ec;
+}
+
+.blockActions {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.actionButton {
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #F5F5F5;
+    border-radius: 4px;
+    background-color: white;
+    color: #444455;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.actionButton:hover {
+    background-color: #F5F5F5;
+    border-color: #5fb3ec;
+    color: #5fb3ec;
+}
+
+.deleteButton:hover {
+    background-color: #ff4444;
+    border-color: #ff4444;
+    color: white;
+}
+
+/* Стили для конкретных типов блоков */
+
+.headingBlock input {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1.25rem;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: none;
+    color: #444455;
+}
+
+.headingBlock input:focus {
+    outline: none;
+    border-color: #5fb3ec;
+    background-color: #F5F5F5;
+}
+
+.textBlock textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: none;
+    color: #444455;
+    resize: vertical;
+}
+
+.textBlock textarea:focus {
+    outline: none;
+    border-color: #5fb3ec;
+    background-color: #F5F5F5;
+}
+
+.latexBlock textarea {
+    width: 100%;
+    min-height: 60px;
+    padding: 0.5rem;
+    font-family: monospace;
+    font-size: 1rem;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: none;
+    color: #444455;
+    resize: vertical;
+}
+
+.latexBlock textarea:focus {
+    outline: none;
+    border-color: #5fb3ec;
+    background-color: #F5F5F5;
+}
+
+.latexPreview {
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid #F5F5F5;
+    border-radius: 4px;
+    background-color: #F5F5F5;
+}
+
+.imageBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.imageUpload {
+    border: 2px dashed #F5F5F5;
+    border-radius: 4px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.imageUpload:hover {
+    border-color: #5fb3ec;
+    background-color: #F5F5F5;
+}
+
+.imagePreview {
+    max-width: 100%;
+    border-radius: 4px;
+}
+
+.imageCaption {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: none;
+    color: #444455;
+}
+
+.imageCaption:focus {
+    outline: none;
+    border-color: #5fb3ec;
+    background-color: #F5F5F5;
+}
+
+.headingControls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.headingLevel {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.headingLevel select {
+    padding: 0.25rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--surface-color);
+}
+
+.textControls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.textFormat {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.textFormat select {
+    padding: 0.25rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--surface-color);
+}
+
+.markdownHint {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background-color: var(--hover-color);
+    border-radius: 4px;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.latexControls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.displayModeLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.latexError {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background-color: var(--error-color);
+    color: white;
+    border-radius: 4px;
+}
+
+.latexHint {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background-color: var(--hover-color);
+    border-radius: 4px;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.imageControls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.imageAlt {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: none;
+    color: var(--text-primary);
+}
+
+.imageReplace {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    color: var(--primary-color);
+    font-size: 0.875rem;
+}
+
+.imageReplace:hover {
+    text-decoration: underline;
+} 
