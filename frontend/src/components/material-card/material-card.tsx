@@ -22,25 +22,25 @@ const getTypeLabel = (type: MaterialType): string => {
 
 const MaterialCard: React.FC<MaterialCardProps> = ({ material }) => {
     return (
-        <Link to={`/material/${material.id}`} className={styles.card}>
+        <Link to={`/material/${material.metadata.id}`} className={styles.card}>
             <div className={styles.header}>
-                <h3 className={styles.title}>{material.title}</h3>
+                <h3 className={styles.title}>{material.metadata.title}</h3>
                 <div className={styles.author}>
-                    <span className={styles.authorName}>{material.author.name}</span>
-                    <span className={styles.authorPosition}>{material.author.position}</span>
+                    <span className={styles.authorName}>{material.metadata.author.name}</span>
+                    <span className={styles.authorPosition}>{material.metadata.author.role}</span>
                 </div>
             </div>
             
             <div className={styles.body}>
                 <div className={styles.separator} />
-                <p className={styles.description}>{material.description}</p>
+                <p className={styles.description}>{material.metadata.description}</p>
             </div>
 
             <div className={styles.footer}>
                 <span className={styles.footerContent}>
-                    <span className={styles.type}>{getTypeLabel(material.type)}</span>
+                    <span className={styles.type}>{getTypeLabel(material.metadata.type)}</span>
                     <span className={styles.bullet}>•</span>
-                    <span className={styles.duration}>{material.duration} мин</span>
+                    <span className={styles.duration}>{material.metadata.duration} мин</span>
                 </span>
             </div>
         </Link>

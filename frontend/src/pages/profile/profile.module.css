@@ -1,8 +1,10 @@
 .container {
-    min-height: 100vh;
+    height: 100vh;
+    max-height: 100vh;
     display: flex;
     flex-direction: column;
     background-color: #F5F5F5;
+    overflow: hidden;
 }
 
 .main {
@@ -10,6 +12,7 @@
     padding: 2rem;
     display: flex;
     justify-content: center;
+    overflow: hidden;
 }
 
 .profileCard {
@@ -17,10 +20,11 @@
     border-radius: 12px;
     width: 100%;
     max-width: 1000px;
-    height: calc(100vh - 160px); /* Фиксированная высота с учетом хедера и футера */
+    height: 100%;
     box-shadow: 0 4px 6px rgba(19, 41, 75, 0.1);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .profileHeader {
@@ -121,26 +125,27 @@
 .content {
     flex: 1;
     padding: 2rem;
-    padding-bottom: 2rem;
     overflow: hidden;
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .materialsGrid {
+    flex: 1;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 2rem;
     align-items: start;
-    height: 100%;
     overflow-y: auto;
     padding-right: 1rem;
 }
 
 .favoritesGrid {
+    flex: 1;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 2rem;
-    height: 100%;
     overflow-y: auto;
     padding-right: 1rem;
 }

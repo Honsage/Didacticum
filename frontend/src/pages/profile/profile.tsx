@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useSelector } from '../../hooks/useSelector';
 import { useDispatch } from '../../hooks/useDispatch';
 import { useProfile } from '../../hooks/useProfile';
 import { logout } from '../../store/slices/user.slice';
@@ -10,8 +9,7 @@ import MaterialCardProfile from '../../components/material-card-profile/material
 import MaterialCard from '../../components/material-card/material-card';
 import defaultAvatar from '../../assets/icons/default-avatar.svg';
 import editIcon from '../../assets/icons/edit.svg';
-import { DEMO_MATERIALS } from '../../constants/demo/materials';
-import { PROFILE_MATERIALS } from '../../constants/demo/profile-materials';
+import { LEARNING_MATERIALS } from '../../constants/demo/materials';
 import * as styles from './profile.module.css';
 
 type TabType = 'materials' | 'favorites';
@@ -48,7 +46,7 @@ const ProfilePage: React.FC = () => {
     };
 
     if (isLoading) {
-        return <div>Loading...</div>; // Можно заменить на компонент загрузки
+        return <div>Loading...</div>;
     }
 
     if (!profile) {
@@ -112,24 +110,24 @@ const ProfilePage: React.FC = () => {
                                     variant="create"
                                     onCreate={handleCreateMaterial}
                                 />
-                                {PROFILE_MATERIALS.map((material) => (
+                                {LEARNING_MATERIALS.map((material) => (
                                     <MaterialCardProfile
-                                        key={material.id}
+                                        key={material.metadata.id}
                                         variant="material"
-                                        title={material.title}
-                                        type={material.type}
-                                        duration={`${material.duration} мин`}
-                                        onEdit={() => handleEditMaterial(material.id)}
-                                        onDelete={() => handleDeleteMaterial(material.id)}
+                                        title={material.metadata.title}
+                                        type={'Лекция'}
+                                        duration={`${0} мин`}
+                                        onEdit={() => handleEditMaterial(material.metadata.id)}
+                                        onDelete={() => handleDeleteMaterial(material.metadata.id)}
                                     />
                                 ))}
                             </div>
                         )}
                         {activeTab === 'favorites' && (
                             <div className={styles.favoritesGrid}>
-                                {DEMO_MATERIALS.map((material) => (
+                                {LEARNING_MATERIALS.map((material) => (
                                     <MaterialCard
-                                        key={material.id}
+                                        key={material.metadata.id}
                                         material={material}
                                     />
                                 ))}

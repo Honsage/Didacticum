@@ -7,7 +7,7 @@ import Footer from '../../components/footer/footer';
 import { useDispatch } from '../../hooks/useDispatch';
 import { useSelector } from '../../hooks/useSelector';
 import { logout } from '../../store/slices/user.slice';
-import { DEMO_MATERIALS } from '../../constants/demo/materials';
+import { LEARNING_MATERIALS } from '../../constants/demo/materials';
 import { MAIN_NAVIGATION, AUTH_NAVIGATION } from '../../constants/navigation';
 import { HOME_PAGE_CONTENT } from '../../constants/content/home';
 import * as headerStyles from '../../components/header/header.module.css';
@@ -28,7 +28,6 @@ const HomePage: React.FC = () => {
 
     const handleLogout = () => {
         dispatch(logout());
-        navigate('/');
     };
 
     const isAuthenticated = !!auth.token && !!auth.expiresAt && Date.now() < auth.expiresAt;
@@ -114,7 +113,7 @@ const HomePage: React.FC = () => {
                             {HOME_PAGE_CONTENT.sections.popularMaterials}
                         </h2>
                         <div className={styles.grid}>
-                            {DEMO_MATERIALS.map((material, index) => (
+                            {LEARNING_MATERIALS.slice(0, 3).map((material, index) => (
                                 <div key={index} className={styles.gridItem}>
                                     <MaterialCard 
                                         material={material}
