@@ -8,42 +8,66 @@ import SearchInput from '../../components/search-input/search-input';
 import { useDispatch } from '../../hooks/useDispatch';
 import { useSelector } from '../../hooks/useSelector';
 import { logout } from '../../store/slices/user.slice';
-import { LEARNING_MATERIALS } from '../../constants/demo/materials';
 import { MAIN_NAVIGATION, AUTH_NAVIGATION } from '../../constants/navigation';
 import { Material } from '../../types/material.types';
 import * as headerStyles from '../../components/header/header.module.css';
 import * as styles from './search.module.css';
+import { materialsService } from '../../services/storage/materials.service';
 
 const SearchPage: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const location = useLocation();
     const [isAnimating, setIsAnimating] = useState(true);
-    const [filteredMaterials, setFilteredMaterials] = useState(LEARNING_MATERIALS);
+    const [materials, setMaterials] = useState<Material[]>([]);
+    const [filteredMaterials, setFilteredMaterials] = useState<Material[]>([]);
     const [selectedMaterial, setSelectedMaterial] = useState<Material | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const { profile, auth } = useSelector(state => state.user);
 
     const isAuthenticated = !!auth.token && !!auth.expiresAt && Date.now() < auth.expiresAt;
+
+    useEffect(() => {
+        const loadMaterials = async () => {
+            try {
+                const loadedMaterials = await materialsService.getAllMaterials();
+                setMaterials(loadedMaterials);
+                setFilteredMaterials(loadedMaterials);
+            } catch (err) {
+                setError('Ошибка при загрузке материалов');
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadMaterials();
+    }, []);
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         const query = searchParams.get('q') || '';
         handleSearch(query);
         
-        // Запускаем анимацию появления
         setIsAnimating(true);
         const timer = setTimeout(() => setIsAnimating(false), 300);
         return () => clearTimeout(timer);
-    }, [location.search]);
+    }, [location.search, materials]);
 
-    const handleSearch = (query: string) => {
-        const filtered = LEARNING_MATERIALS.filter(material => 
-            material.metadata.title.toLowerCase().includes(query.toLowerCase()) ||
-            material.metadata.tags?.some(tag => 
-                tag.toLowerCase().includes(query.toLowerCase())
-            )
-        );
-        setFilteredMaterials(filtered);
+    const handleSearch = async (query: string) => {
+        try {
+            if (!query.trim()) {
+                setFilteredMaterials(materials);
+                return;
+            }
+            
+            const searchResults = await materialsService.searchMaterials(query);
+            setFilteredMaterials(searchResults);
+        } catch (err) {
+            console.error('Ошибка при поиске:', err);
+            setError('Ошибка при поиске материалов');
+        }
     };
     
     const handleLogout = () => {
@@ -117,40 +141,48 @@ const SearchPage: React.FC = () => {
                 }/>
             
             <main className={`${styles.main} ${isAnimating ? styles.animating : ''}`}>
-                <div className={styles.searchContainer}>
-                    <div className={styles.searchWrapper}>
-                        <SearchInput
-                            isExpanded
-                            defaultValue={new URLSearchParams(location.search).get('q') || ''}
-                        />
-                        <div className={styles.filters}>
-                            <button className={styles.filterButton}>
-                                Все фильтры
-                            </button>
-                            <div className={styles.filterTags}>
-                                <button className={styles.filterTag}>Программирование</button>
-                                <button className={styles.filterTag}>Математика</button>
-                                <button className={styles.filterTag}>Физика</button>
+                {loading ? (
+                    <div className={styles.loading}>Загрузка...</div>
+                ) : error ? (
+                    <div className={styles.error}>{error}</div>
+                ) : (
+                    <>
+                        <div className={styles.searchContainer}>
+                            <div className={styles.searchWrapper}>
+                                <SearchInput
+                                    isExpanded
+                                    defaultValue={new URLSearchParams(location.search).get('q') || ''}
+                                />
+                                <div className={styles.filters}>
+                                    <button className={styles.filterButton}>
+                                        Все фильтры
+                                    </button>
+                                    <div className={styles.filterTags}>
+                                        <button className={styles.filterTag}>Программирование</button>
+                                        <button className={styles.filterTag}>Математика</button>
+                                        <button className={styles.filterTag}>Физика</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div className={styles.resultsContainer}>
-                    <div className={styles.resultsGrid}>
-                        {filteredMaterials.map(material => (
-                            <div 
-                                key={material.metadata.id}
-                                onClick={() => handleMaterialClick(material)}
-                                className={styles.cardWrapper}
-                            >
-                                <MaterialCard
-                                    material={material}
-                                />
+                        <div className={styles.resultsContainer}>
+                            <div className={styles.resultsGrid}>
+                                {filteredMaterials.map(material => (
+                                    <div 
+                                        key={material.metadata.id}
+                                        onClick={() => handleMaterialClick(material)}
+                                        className={styles.cardWrapper}
+                                    >
+                                        <MaterialCard
+                                            material={material}
+                                        />
+                                    </div>
+                                ))}
                             </div>
-                        ))}
-                    </div>
-                </div>
+                        </div>
+                    </>
+                )}
             </main>
 
             {selectedMaterial && (

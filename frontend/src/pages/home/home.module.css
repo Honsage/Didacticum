@@ -101,6 +101,24 @@
     border-color: #5FB3EC;
 }
 
+.loading,
+.error {
+    text-align: center;
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 1rem;
+    font-size: 1.1rem;
+}
+
+.loading {
+    color: var(--text-secondary);
+    background-color: var(--surface-color);
+}
+
+.error {
+    color: white;
+    background-color: var(--error-color);
+}
 
 @media (max-width: 768px) {
     .welcome {

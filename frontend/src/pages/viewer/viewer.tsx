@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
@@ -7,16 +7,48 @@ import TextBlock from '../../components/blocks/text-block/text-block';
 import CodeBlock from '../../components/blocks/code-block/code-block';
 import LatexBlock from '../../components/blocks/latex-block/latex-block';
 import ImageBlock from '../../components/blocks/image-block/image-block';
-import { LEARNING_MATERIALS } from '../../constants/demo/materials';
-import { ContentBlock } from '../../types/material.types';
+import { materialsService } from '../../services/storage/materials.service';
+import { ContentBlock, Material } from '../../types/material.types';
 import * as styles from './viewer.module.css';
 
 const ViewerPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
-    const material = LEARNING_MATERIALS.find(m => m.metadata.id === id);
+    const [material, setMaterial] = useState<Material | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-    if (!material) {
-        return <div>Материал не найден</div>;
+    useEffect(() => {
+        const loadMaterial = async () => {
+            if (!id) {
+                setError('ID материала не указан');
+                setLoading(false);
+                return;
+            }
+
+            try {
+                const loadedMaterial = await materialsService.getMaterialById(id);
+                if (!loadedMaterial) {
+                    setError('Материал не найден');
+                } else {
+                    setMaterial(loadedMaterial);
+                }
+            } catch (err) {
+                setError('Ошибка при загрузке материала');
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadMaterial();
+    }, [id]);
+
+    if (loading) {
+        return <div>Загрузка...</div>;
+    }
+
+    if (error || !material) {
+        return <div>{error}</div>;
     }
 
     const renderBlock = (block: ContentBlock) => {

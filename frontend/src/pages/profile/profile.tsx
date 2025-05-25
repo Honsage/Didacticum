@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from '../../hooks/useDispatch';
 import { useProfile } from '../../hooks/useProfile';
@@ -7,9 +7,11 @@ import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import MaterialCardProfile from '../../components/material-card-profile/material-card-profile';
 import MaterialCard from '../../components/material-card/material-card';
+import MaterialModal from '../../components/material-modal/material-modal';
 import defaultAvatar from '../../assets/icons/default-avatar.svg';
 import editIcon from '../../assets/icons/edit.svg';
-import { LEARNING_MATERIALS } from '../../constants/demo/materials';
+import { materialsService } from '../../services/storage/materials.service';
+import { Material } from '../../types/material.types';
 import * as styles from './profile.module.css';
 
 type TabType = 'materials' | 'favorites';
@@ -18,26 +20,78 @@ const ProfilePage: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [activeTab, setActiveTab] = useState<TabType>('materials');
+    const [selectedMaterial, setSelectedMaterial] = useState<Material | null>(null);
+    const [materials, setMaterials] = useState<Material[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const { profile, isLoading } = useProfile();
     
+    useEffect(() => {
+        const loadMaterials = async () => {
+            if (!profile) return;
+
+            try {
+                let loadedMaterials: Material[];
+                if (activeTab === 'materials' && profile.role === 'teacher') {
+                    loadedMaterials = await materialsService.getMaterialsByAuthor(profile.id);
+                } else {
+                    // TODO: Implement favorites loading
+                    loadedMaterials = await materialsService.getAllMaterials();
+                }
+                setMaterials(loadedMaterials);
+            } catch (err) {
+                setError('Ошибка при загрузке материалов');
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadMaterials();
+    }, [activeTab, profile]);
+
     const handleLogout = () => {
         dispatch(logout());
         navigate('/login');
     };
 
     const handleCreateMaterial = () => {
-        // TODO: Implement material creation
-        console.log('Create material');
+        navigate('/edit');
     };
 
-    const handleEditMaterial = (id: string) => {
-        // TODO: Implement material editing
-        console.log('Edit material', id);
+    const handleMaterialClick = (material: Material) => {
+        setSelectedMaterial(material);
     };
 
-    const handleDeleteMaterial = (id: string) => {
-        // TODO: Implement material deletion
-        console.log('Delete material', id);
+    const handleModalClose = () => {
+        setSelectedMaterial(null);
+    };
+
+    const handleViewMaterial = () => {
+        if (selectedMaterial) {
+            navigate(`/viewer/${selectedMaterial.metadata.id}`);
+        }
+    };
+
+    const handleEditMaterial = () => {
+        if (selectedMaterial) {
+            navigate(`/edit/${selectedMaterial.metadata.id}`);
+        }
+    };
+
+    const handleDeleteMaterial = async () => {
+        if (selectedMaterial) {
+            try {
+                await materialsService.deleteMaterial(selectedMaterial.metadata.id);
+                setMaterials(prevMaterials => 
+                    prevMaterials.filter(m => m.metadata.id !== selectedMaterial.metadata.id)
+                );
+                setSelectedMaterial(null);
+            } catch (err) {
+                console.error('Ошибка при удалении материала:', err);
+                setError('Ошибка при удалении материала');
+            }
+        }
     };
 
     const handleEditProfile = () => {
@@ -104,38 +158,63 @@ const ProfilePage: React.FC = () => {
                     </div>
 
                     <div className={styles.content}>
-                        {activeTab === 'materials' && profile.role === 'teacher' && (
-                            <div className={styles.materialsGrid}>
-                                <MaterialCardProfile
-                                    variant="create"
-                                    onCreate={handleCreateMaterial}
-                                />
-                                {LEARNING_MATERIALS.map((material) => (
-                                    <MaterialCardProfile
-                                        key={material.metadata.id}
-                                        variant="material"
-                                        title={material.metadata.title}
-                                        type={'Лекция'}
-                                        duration={`${0} мин`}
-                                        onEdit={() => handleEditMaterial(material.metadata.id)}
-                                        onDelete={() => handleDeleteMaterial(material.metadata.id)}
-                                    />
-                                ))}
-                            </div>
+                        {error && (
+                            <div className={styles.error}>{error}</div>
                         )}
-                        {activeTab === 'favorites' && (
-                            <div className={styles.favoritesGrid}>
-                                {LEARNING_MATERIALS.map((material) => (
-                                    <MaterialCard
-                                        key={material.metadata.id}
-                                        material={material}
-                                    />
-                                ))}
-                            </div>
+                        
+                        {loading ? (
+                            <div className={styles.loading}>Загрузка...</div>
+                        ) : (
+                            <>
+                                {activeTab === 'materials' && profile.role === 'teacher' && (
+                                    <div className={styles.materialsGrid}>
+                                        <MaterialCardProfile
+                                            variant="create"
+                                            onCreate={handleCreateMaterial}
+                                        />
+                                        {materials.map((material) => (
+                                            <div
+                                                key={material.metadata.id}
+                                                onClick={() => handleMaterialClick(material)}
+                                                className={styles.cardWrapper}
+                                            >
+                                                <MaterialCardProfile
+                                                    variant="material"
+                                                    title={material.metadata.title}
+                                                    type={material.metadata.type === 'lecture' ? 'Лекция' : 
+                                                          material.metadata.type === 'test' ? 'Тест' : 'Практика'}
+                                                    duration={`${material.metadata.duration} мин`}
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                                {activeTab === 'favorites' && (
+                                    <div className={styles.favoritesGrid}>
+                                        {materials.map((material) => (
+                                            <MaterialCard
+                                                key={material.metadata.id}
+                                                material={material}
+                                            />
+                                        ))}
+                                    </div>
+                                )}
+                            </>
                         )}
                     </div>
                 </div>
             </main>
+
+            {selectedMaterial && (
+                <MaterialModal
+                    material={selectedMaterial}
+                    showAuthor={false}
+                    onClose={handleModalClose}
+                    onView={handleViewMaterial}
+                    onEdit={handleEditMaterial}
+                    onDelete={handleDeleteMaterial}
+                />
+            )}
 
             <Footer />
         </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import SearchInput from '../../components/search-input/search-input';
 import MaterialCard from '../../components/material-card/material-card';
@@ -7,9 +7,10 @@ import Footer from '../../components/footer/footer';
 import { useDispatch } from '../../hooks/useDispatch';
 import { useSelector } from '../../hooks/useSelector';
 import { logout } from '../../store/slices/user.slice';
-import { LEARNING_MATERIALS } from '../../constants/demo/materials';
+import { materialsService } from '../../services/storage/materials.service';
 import { MAIN_NAVIGATION, AUTH_NAVIGATION } from '../../constants/navigation';
 import { HOME_PAGE_CONTENT } from '../../constants/content/home';
+import { Material } from '../../types/material.types';
 import * as headerStyles from '../../components/header/header.module.css';
 import * as styles from './home.module.css';
 
@@ -18,6 +19,26 @@ const HomePage: React.FC = () => {
     const dispatch = useDispatch();
     const { profile, auth } = useSelector(state => state.user);
     const [isSearchFocused, setIsSearchFocused] = useState(false);
+    const [popularMaterials, setPopularMaterials] = useState<Material[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const loadMaterials = async () => {
+            try {
+                const materials = await materialsService.getAllMaterials();
+                // В будущем здесь можно добавить логику для выбора популярных материалов
+                setPopularMaterials(materials.slice(0, 3));
+            } catch (err) {
+                setError('Ошибка при загрузке материалов');
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadMaterials();
+    }, []);
 
     const handleSearchFocus = () => {
         setIsSearchFocused(true);
@@ -112,15 +133,21 @@ const HomePage: React.FC = () => {
                         <h2 className={styles.sectionTitle}>
                             {HOME_PAGE_CONTENT.sections.popularMaterials}
                         </h2>
-                        <div className={styles.grid}>
-                            {LEARNING_MATERIALS.slice(0, 3).map((material, index) => (
-                                <div key={index} className={styles.gridItem}>
-                                    <MaterialCard 
-                                        material={material}
-                                    />
-                                </div>
-                            ))}
-                        </div>
+                        {error ? (
+                            <div className={styles.error}>{error}</div>
+                        ) : loading ? (
+                            <div className={styles.loading}>Загрузка...</div>
+                        ) : (
+                            <div className={styles.grid}>
+                                {popularMaterials.map((material, index) => (
+                                    <div key={material.metadata.id} className={styles.gridItem}>
+                                        <MaterialCard 
+                                            material={material}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </section>
             </main>
