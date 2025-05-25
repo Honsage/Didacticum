@@ -1,15 +1,35 @@
 .latex {
-    font-family: 'Computer Modern', serif;
     color: #13294B;
 }
 
 .display {
-    margin: 1em 0;
+    margin: 1.5em 0;
     text-align: center;
     font-size: 1.2em;
+    overflow-x: auto;
+    padding: 0.5em 0;
+}
+
+.display::-webkit-scrollbar {
+    height: 6px;
+}
+
+.display::-webkit-scrollbar-track {
+    background: #F3F4F6;
+    border-radius: 3px;
+}
+
+.display::-webkit-scrollbar-thumb {
+    background: #D1D5DB;
+    border-radius: 3px;
+}
+
+.display::-webkit-scrollbar-thumb:hover {
+    background: #9CA3AF;
 }
 
 .inline {
-    display: inline;
+    display: inline-block;
     margin: 0 0.2em;
+    vertical-align: middle;
 } 
