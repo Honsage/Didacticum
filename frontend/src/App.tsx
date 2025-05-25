@@ -6,11 +6,13 @@ import HomePage from './pages/home/home';
 import ProfilePage from './pages/profile/profile';
 import NotFound from './pages/not-found/not-found';
 import ProtectedRoute from './components/protected-route/protected-route';
+import SearchPage from './pages/search/search';
 
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/search" element={<SearchPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route 
