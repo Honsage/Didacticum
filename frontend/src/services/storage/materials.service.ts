@@ -76,14 +76,13 @@ class MaterialsService {
         });
     }
 
-    async searchMaterials(query: string): Promise<Material[]> {
+    async searchMaterials(query: string, options: { type: 'title' | 'author' } = { type: 'title' }): Promise<Material[]> {
         await this.init();
         return new Promise((resolve, reject) => {
             const store = this.getStore();
-            const titleIndex = store.index('title');
             const materials: Material[] = [];
             
-            const request = titleIndex.openCursor();
+            const request = store.openCursor();
             
             request.onerror = () => reject(new Error('Failed to search materials'));
             request.onsuccess = (event) => {
@@ -91,11 +90,22 @@ class MaterialsService {
                 
                 if (cursor) {
                     const material = cursor.value as Material;
-                    if (material.metadata.title.toLowerCase().includes(query.toLowerCase()) ||
-                        material.metadata.tags?.some(tag => 
-                            tag.toLowerCase().includes(query.toLowerCase())
-                        )) {
-                        materials.push(material);
+                    const searchQuery = query.toLowerCase();
+
+                    if (options.type === 'author') {
+                        // Search by author name
+                        const authorName = material.metadata.author.name.toLowerCase();
+                        if (authorName.includes(searchQuery)) {
+                            materials.push(material);
+                        }
+                    } else {
+                        // Search by title and tags
+                        if (material.metadata.title.toLowerCase().includes(searchQuery) ||
+                            material.metadata.tags?.some(tag => 
+                                tag.toLowerCase().includes(searchQuery)
+                            )) {
+                            materials.push(material);
+                        }
                     }
                     cursor.continue();
                 } else {

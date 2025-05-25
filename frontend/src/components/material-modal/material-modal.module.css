@@ -17,7 +17,7 @@
     padding: 24px;
     width: 100%;
     max-width: 600px;
-    max-height: 90vh;
+    max-height: 200vh;
     overflow-y: auto;
     position: relative;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -47,8 +47,8 @@
 }
 
 .title {
-    color: var(--color-primary);
-    font-size: 24px;
+    color: #13294B;
+    font-size: 28px;
     font-weight: 600;
     margin: 0 0 8px 0;
 }

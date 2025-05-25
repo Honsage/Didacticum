@@ -135,4 +135,55 @@
 .error {
     color: white;
     background-color: var(--error-color);
+}
+
+.searchControls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.searchTypeButtons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.searchTypeButton {
+    padding: 0.5rem 1rem;
+    border: 1px solid #5FB3EC;
+    border-radius: 4px;
+    background: transparent;
+    color: #444455;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.searchTypeButton:hover {
+    background: rgba(95, 179, 236, 0.1);
+}
+
+.searchTypeButton.active {
+    background: #5FB3EC;
+    color: white;
+}
+
+.sortButton {
+    padding: 0.5rem;
+    width: 36px;
+    height: 36px;
+    border: 1px solid #5FB3EC;
+    border-radius: 4px;
+    background: transparent;
+    color: #444455;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.2s ease;
+}
+
+.sortButton:hover {
+    background: rgba(95, 179, 236, 0.1);
 } 

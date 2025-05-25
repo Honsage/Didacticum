@@ -14,6 +14,8 @@ import * as headerStyles from '../../components/header/header.module.css';
 import * as styles from './search.module.css';
 import { materialsService } from '../../services/storage/materials.service';
 
+type SortOrder = 'asc' | 'desc';
+
 const SearchPage: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -24,6 +26,8 @@ const SearchPage: React.FC = () => {
     const [selectedMaterial, setSelectedMaterial] = useState<Material | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
+    const [searchType, setSearchType] = useState<'title' | 'author'>('title');
     const { profile, auth } = useSelector(state => state.user);
 
     const isAuthenticated = !!auth.token && !!auth.expiresAt && Date.now() < auth.expiresAt;
@@ -58,16 +62,41 @@ const SearchPage: React.FC = () => {
     const handleSearch = async (query: string) => {
         try {
             if (!query.trim()) {
-                setFilteredMaterials(materials);
+                setFilteredMaterials(sortMaterials(materials, sortOrder));
                 return;
             }
             
-            const searchResults = await materialsService.searchMaterials(query);
-            setFilteredMaterials(searchResults);
+            const searchResults = await materialsService.searchMaterials(query, { type: searchType });
+            const sortedResults = sortMaterials(searchResults, sortOrder);
+            setFilteredMaterials(sortedResults);
         } catch (err) {
             console.error('Ошибка при поиске:', err);
             setError('Ошибка при поиске материалов');
         }
+    };
+
+    const sortMaterials = (materialsToSort: Material[], order: SortOrder) => {
+        return [...materialsToSort].sort((a, b) => {
+            const titleA = a.metadata.title.toLowerCase();
+            const titleB = b.metadata.title.toLowerCase();
+            return order === 'asc' 
+                ? titleA.localeCompare(titleB)
+                : titleB.localeCompare(titleA);
+        });
+    };
+
+    const handleSortOrderChange = () => {
+        const newOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+        setSortOrder(newOrder);
+        setFilteredMaterials(sortMaterials(filteredMaterials, newOrder));
+    };
+
+    const handleSearchTypeChange = (type: 'title' | 'author') => {
+        setSearchType(type);
+        // Trigger new search with current query
+        const searchParams = new URLSearchParams(location.search);
+        const currentQuery = searchParams.get('q') || '';
+        handleSearch(currentQuery);
     };
     
     const handleLogout = () => {
@@ -154,13 +183,28 @@ const SearchPage: React.FC = () => {
                                     defaultValue={new URLSearchParams(location.search).get('q') || ''}
                                 />
                                 <div className={styles.filters}>
-                                    <button className={styles.filterButton}>
-                                        Все фильтры
-                                    </button>
-                                    <div className={styles.filterTags}>
-                                        <button className={styles.filterTag}>Программирование</button>
-                                        <button className={styles.filterTag}>Математика</button>
-                                        <button className={styles.filterTag}>Физика</button>
+                                    <div className={styles.searchControls}>
+                                        <div className={styles.searchTypeButtons}>
+                                            <button 
+                                                className={`${styles.searchTypeButton} ${searchType === 'title' ? styles.active : ''}`}
+                                                onClick={() => handleSearchTypeChange('title')}
+                                            >
+                                                Поиск по названию
+                                            </button>
+                                            <button 
+                                                className={`${styles.searchTypeButton} ${searchType === 'author' ? styles.active : ''}`}
+                                                onClick={() => handleSearchTypeChange('author')}
+                                            >
+                                                Поиск по автору
+                                            </button>
+                                        </div>
+                                        <button 
+                                            className={styles.sortButton}
+                                            onClick={handleSortOrderChange}
+                                            title={sortOrder === 'asc' ? 'По убыванию' : 'По возрастанию'}
+                                        >
+                                            {sortOrder === 'asc' ? '↓' : '↑'}
+                                        </button>
                                     </div>
                                 </div>
                             </div>

@@ -18,20 +18,11 @@ const SearchInput: React.FC<SearchInputProps> = ({
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (value.trim()) {
-            navigate(`/search?q=${encodeURIComponent(value.trim())}`);
-        }
+        navigate(`/search${value.trim() ? `?q=${encodeURIComponent(value.trim())}` : ''}`);
     };
 
     const handleSearchClick = () => {
-        if (value.trim()) {
-            navigate(`/search?q=${encodeURIComponent(value.trim())}`);
-        } else {
-            const input = document.querySelector(`.${styles.searchInput}`) as HTMLInputElement;
-            if (input) {
-                input.focus();
-            }
-        }
+        navigate(`/search${value.trim() ? `?q=${encodeURIComponent(value.trim())}` : ''}`);
     };
 
     return (
@@ -40,7 +31,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
             onSubmit={handleSubmit}
         >
             <button 
-                type="button" 
+                type="submit" 
                 className={styles.searchButton}
                 onClick={handleSearchClick}
             >
