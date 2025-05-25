@@ -1,0 +1,162 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    width: 100%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.closeIcon {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.closeIcon:hover {
+    opacity: 1;
+}
+
+.header {
+    padding-right: 40px;
+    margin-bottom: 16px;
+}
+
+.title {
+    color: var(--color-primary);
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+}
+
+.author {
+    color: var(--color-primary-light);
+    font-style: italic;
+    font-size: 16px;
+    margin: 0;
+}
+
+.divider {
+    height: 1px;
+    background-color: #E5E7EB;
+    margin: 16px 0;
+}
+
+.content {
+    margin-bottom: 24px;
+}
+
+.description {
+    color: #374151;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0 0 20px 0;
+}
+
+.characteristics {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.characteristic {
+    display: flex;
+    align-items: baseline;
+}
+
+.label {
+    color: #6B7280;
+    font-size: 14px;
+    width: 140px;
+    flex-shrink: 0;
+}
+
+.value {
+    color: #111827;
+    font-size: 14px;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 32px;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+}
+
+.button {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+
+.viewButton {
+    background-color: #13294B;
+    color: white;
+}
+
+.viewButton:hover {
+    background-color: #5fb3ec;
+}
+
+.editButton {
+    background-color: #13294B;
+    color: white;
+}
+
+.editButton:hover {
+    background-color: #5fb3ec;
+}
+
+.deleteButton {
+    background-color: #13294B;
+    color: white;
+}
+
+.deleteButton:hover {
+    background-color: #B91C1C;
+}
+
+.closeButton {
+    background-color: white;
+    color: #13294B;
+    border: 1px solid #13294B;
+}
+
+.closeButton:hover {
+    background-color: #5fb3ec;
+    color: white;
+} 

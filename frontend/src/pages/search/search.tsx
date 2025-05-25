@@ -3,12 +3,14 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import MaterialCard from '../../components/material-card/material-card';
+import MaterialModal from '../../components/material-modal/material-modal';
 import SearchInput from '../../components/search-input/search-input';
 import { useDispatch } from '../../hooks/useDispatch';
 import { useSelector } from '../../hooks/useSelector';
 import { logout } from '../../store/slices/user.slice';
 import { LEARNING_MATERIALS } from '../../constants/demo/materials';
 import { MAIN_NAVIGATION, AUTH_NAVIGATION } from '../../constants/navigation';
+import { Material } from '../../types/material.types';
 import * as headerStyles from '../../components/header/header.module.css';
 import * as styles from './search.module.css';
 
@@ -18,6 +20,7 @@ const SearchPage: React.FC = () => {
     const location = useLocation();
     const [isAnimating, setIsAnimating] = useState(true);
     const [filteredMaterials, setFilteredMaterials] = useState(LEARNING_MATERIALS);
+    const [selectedMaterial, setSelectedMaterial] = useState<Material | null>(null);
     const { profile, auth } = useSelector(state => state.user);
 
     const isAuthenticated = !!auth.token && !!auth.expiresAt && Date.now() < auth.expiresAt;
@@ -45,6 +48,20 @@ const SearchPage: React.FC = () => {
     
     const handleLogout = () => {
         dispatch(logout());
+    };
+
+    const handleMaterialClick = (material: Material) => {
+        setSelectedMaterial(material);
+    };
+
+    const handleModalClose = () => {
+        setSelectedMaterial(null);
+    };
+
+    const handleViewMaterial = () => {
+        if (selectedMaterial) {
+            navigate(`/viewer/${selectedMaterial.metadata.id}`);
+        }
     };
 
     return (
@@ -122,29 +139,28 @@ const SearchPage: React.FC = () => {
                 <div className={styles.resultsContainer}>
                     <div className={styles.resultsGrid}>
                         {filteredMaterials.map(material => (
-                            <MaterialCard
+                            <div 
                                 key={material.metadata.id}
-                                material={{
-                                    metadata: {
-                                        id: material.metadata.id,
-                                        title: material.metadata.title,
-                                        description: material.metadata.description,
-                                        author: {
-                                            id: material.metadata.author.id,
-                                            name: material.metadata.author.name,
-                                            role: 'Преподаватель'
-                                        },
-                                        createdAt: material.metadata.createdAt,
-                                        updatedAt: material.metadata.updatedAt,
-                                        type: material.metadata.type,
-                                        duration: material.metadata.duration
-                                    }
-                                }}
-                            />
+                                onClick={() => handleMaterialClick(material)}
+                                className={styles.cardWrapper}
+                            >
+                                <MaterialCard
+                                    material={material}
+                                />
+                            </div>
                         ))}
                     </div>
                 </div>
             </main>
+
+            {selectedMaterial && (
+                <MaterialModal
+                    material={selectedMaterial}
+                    showAuthor={true}
+                    onClose={handleModalClose}
+                    onView={handleViewMaterial}
+                />
+            )}
 
             <Footer />
         </div>

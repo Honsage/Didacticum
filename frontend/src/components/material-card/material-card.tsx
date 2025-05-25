@@ -22,7 +22,7 @@ const getTypeLabel = (type: MaterialType): string => {
 
 const MaterialCard: React.FC<MaterialCardProps> = ({ material }) => {
     return (
-        <Link to={`/material/${material.metadata.id}`} className={styles.card}>
+        <div /*to={`/material/${material.metadata.id}`}*/ className={styles.card}>
             <div className={styles.header}>
                 <h3 className={styles.title}>{material.metadata.title}</h3>
                 <div className={styles.author}>
@@ -43,7 +43,7 @@ const MaterialCard: React.FC<MaterialCardProps> = ({ material }) => {
                     <span className={styles.duration}>{material.metadata.duration} мин</span>
                 </span>
             </div>
-        </Link>
+        </div>
     );
 };
 
