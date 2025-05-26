@@ -5,12 +5,8 @@ interface NavigationItem {
 
 export const MAIN_NAVIGATION: NavigationItem[] = [
     {
-        path: '/materials',
-        label: 'Материалы'
-    },
-    {
-        path: '/authors',
-        label: 'Авторы'
+        path: '/viewer',
+        label: 'Просмотреть материал'
     },
     {
         path: '/about',

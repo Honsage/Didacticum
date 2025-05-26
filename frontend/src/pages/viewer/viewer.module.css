@@ -88,4 +88,62 @@
 
 .homeLink:hover {
     color: #5FB3EC;
+}
+
+.uploadSection {
+    text-align: center;
+    padding: 3rem 2rem;
+    border: 2px dashed #ccc;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background-color: #fafafa;
+}
+
+.uploadSection.dragging {
+    border-color: #4a90e2;
+    background-color: #f0f7ff;
+    transform: scale(1.02);
+}
+
+.uploadSection h2 {
+    color: #13294B;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.uploadSection p {
+    color: #444455;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.uploadButton {
+    display: inline-block;
+    background-color: #13294B;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    transition: background-color 0.2s;
+}
+
+.uploadButton:hover {
+    background-color: #5FB3EC;
+}
+
+.loading,
+.error {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.1rem;
+}
+
+.loading {
+    color: #666;
+}
+
+.error {
+    color: #dc2626;
 } 

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import HeadingBlock from '../../components/blocks/heading-block/heading-block';
@@ -14,38 +14,39 @@ import { useDispatch } from '../../hooks/useDispatch';
 import { useSelector } from '../../hooks/useSelector';
 import { logout } from '../../store/slices/user.slice';
 import { materialsService } from '../../services/storage/materials.service';
+import { readFromFile } from '../../utils/ilm.utils';
 import { ContentBlock, Material } from '../../types/material.types';
 import * as styles from './viewer.module.css';
 import * as headerStyles from '../../components/header/header.module.css';
 
 const ViewerPage: React.FC = () => {
-    const dispatch = useDispatch();
     const { id } = useParams<{ id: string }>();
     const [material, setMaterial] = useState<Material | null>(null);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [isDragging, setIsDragging] = useState(false);
+    const dispatch = useDispatch();
     const { profile, auth } = useSelector(state => state.user);
-
     const isAuthenticated = !!auth.token && !!auth.expiresAt && Date.now() < auth.expiresAt;
+
+    const handleLogout = () => {
+        dispatch(logout());
+    };
 
     useEffect(() => {
         const loadMaterial = async () => {
             if (!id) {
-                setError('ID материала не указан');
                 setLoading(false);
                 return;
             }
 
             try {
                 const loadedMaterial = await materialsService.getMaterialById(id);
-                if (!loadedMaterial) {
-                    setError('Материал не найден');
-                } else {
-                    setMaterial(loadedMaterial);
-                }
+                setMaterial(loadedMaterial);
+                setError(null);
             } catch (err) {
-                setError('Ошибка при загрузке материала');
-                console.error(err);
+                console.error('Ошибка при загрузке материала:', err);
+                setError('Не удалось загрузить материал');
             } finally {
                 setLoading(false);
             }
@@ -54,17 +55,61 @@ const ViewerPage: React.FC = () => {
         loadMaterial();
     }, [id]);
 
-    const handleLogout = () => {
-        dispatch(logout());
-    };
+    const handleFileUpload = useCallback(async (file: File) => {
+        if (!file.name.endsWith('.ilm')) {
+            setError('Пожалуйста, выберите файл с расширением .ilm');
+            return;
+        }
 
-    if (loading) {
-        return <div>Загрузка...</div>;
-    }
+        try {
+            setLoading(true);
+            const loadedMaterial = await readFromFile(file);
+            setMaterial(loadedMaterial);
+            setError(null);
+        } catch (err) {
+            console.error('Ошибка при чтении файла:', err);
+            setError('Не удалось прочитать файл. Убедитесь, что это корректный .ilm файл');
+        } finally {
+            setLoading(false);
+        }
+    }, []);
 
-    if (error || !material) {
-        return <div>{error}</div>;
-    }
+    const handleInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            handleFileUpload(file);
+            // Очищаем input для возможности повторной загрузки того же файла
+            event.target.value = '';
+        }
+    }, [handleFileUpload]);
+
+    const handleDragEnter = useCallback((e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(true);
+    }, []);
+
+    const handleDragLeave = useCallback((e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(false);
+    }, []);
+
+    const handleDragOver = useCallback((e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+    }, []);
+
+    const handleDrop = useCallback((e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(false);
+
+        const file = e.dataTransfer.files[0];
+        if (file) {
+            handleFileUpload(file);
+        }
+    }, [handleFileUpload]);
 
     const renderBlock = (block: ContentBlock) => {
         switch (block.type) {
@@ -130,37 +175,63 @@ const ViewerPage: React.FC = () => {
             
             <main className={styles.main}>
                 <div className={styles.content}>
-                    <header className={styles.header}>
-                        {material.metadata.author && (
-                            <p className={styles.author}>
-                                {material.metadata.author.name}
-                            </p>
-                        )}
-                        <h1 className={styles.title}>{material.metadata.title}</h1>
-                    </header>
-
-                    <div className={styles.metablock}>
-                        <div className={styles.metadata}>
-                            <div className={styles.metaItem}>
-                                <span className={styles.metaLabel}>Тип:</span>
-                                <span className={styles.metaValue}>
-                                    {material.metadata.type === 'lecture' ? 'Лекция' : 
-                                    material.metadata.type === 'test' ? 'Тест' : 'Практика'}
-                                </span>
-                            </div>
-                            <div className={styles.metaItem}>
-                                <span className={styles.metaLabel}>Продолжительность:</span>
-                                <span className={styles.metaValue}>{material.metadata.duration} мин</span>
-                            </div>
+                    {loading ? (
+                        <div className={styles.loading}>Загрузка...</div>
+                    ) : error ? (
+                        <div className={styles.error}>{error}</div>
+                    ) : !material && !id ? (
+                        <div 
+                            className={`${styles.uploadSection} ${isDragging ? styles.dragging : ''}`}
+                            onDragEnter={handleDragEnter}
+                            onDragLeave={handleDragLeave}
+                            onDragOver={handleDragOver}
+                            onDrop={handleDrop}
+                        >
+                            <h2>Загрузите материал для просмотра</h2>
+                            <p>Перетащите файл .ilm сюда или нажмите для выбора</p>
+                            <label className={styles.uploadButton}>
+                                Выбрать файл
+                                <input
+                                    type="file"
+                                    accept=".ilm"
+                                    onChange={handleInputChange}
+                                    style={{ display: 'none' }}
+                                />
+                            </label>
                         </div>
-                        <div className={styles.description}>
-                            {material.metadata.description}
-                        </div>
-                    </div>
-
-                    <div className={styles.blocks}>
-                        {material.blocks?.map(block => renderBlock(block))}
-                    </div>
+                    ) : material ? (
+                        <>
+                            <div className={styles.header}>
+                                {material.metadata.author && (
+                                    <p className={styles.author}>{material.metadata.author.name}</p>
+                                )}
+                                <h1 className={styles.title}>{material.metadata.title}</h1>
+                                <div className={styles.metablock}>
+                                    <div className={styles.metadata}>
+                                        <div className={styles.metaItem}>
+                                            <span className={styles.metaLabel}>Тип:</span>
+                                            <span className={styles.metaValue}>
+                                                {material.metadata.type === 'lecture' ? 'Лекция' : 
+                                                material.metadata.type === 'test' ? 'Тест' : 'Практика'}
+                                            </span>
+                                        </div>
+                                        <div className={styles.metaItem}>
+                                            <span className={styles.metaLabel}>Продолжительность:</span>
+                                            <span className={styles.metaValue}>{material.metadata.duration} мин</span>
+                                        </div>
+                                    </div>
+                                    {material.metadata.description && (
+                                        <p className={styles.description}>{material.metadata.description}</p>
+                                    )}
+                                </div>
+                            </div>
+                            <div className={styles.blocks}>
+                                {material.blocks?.map(renderBlock)}
+                            </div>
+                        </>
+                    ) : (
+                        <div className={styles.error}>Материал не найден</div>
+                    )}
                 </div>
             </main>
 

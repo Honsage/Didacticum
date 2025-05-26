@@ -17,6 +17,7 @@ export default function App() {
       <Route path="/search" element={<SearchPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
+      <Route path="/viewer" element={<ViewerPage />} />
       <Route path="/viewer/:id" element={<ViewerPage />} />
       <Route 
         path="/profile" 
