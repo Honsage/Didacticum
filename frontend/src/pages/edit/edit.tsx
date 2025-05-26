@@ -8,6 +8,7 @@ import { useSelector } from '../../hooks/useSelector';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import * as styles from './edit.module.css';
+import { saveToFile, readFromFile } from '../../utils/ilm.utils';
 
 export const EditPage: React.FC = () => {
     const { id } = useParams();
@@ -162,6 +163,47 @@ export const EditPage: React.FC = () => {
         });
     };
 
+    const handleFileUpload = async () => {
+        try {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.ilm';
+            
+            input.onchange = async (e) => {
+                const file = (e.target as HTMLInputElement).files?.[0];
+                if (!file) return;
+
+                try {
+                    const loadedMaterial = await readFromFile(file);
+                    
+                    // Проверяем права на редактирование загруженного материала
+                    if (loadedMaterial.metadata.author.id !== profile?.id) {
+                        setError('У вас нет прав на редактирование этого материала');
+                        return;
+                    }
+
+                    setMaterial(loadedMaterial);
+                } catch (error) {
+                    setError(error instanceof Error ? error.message : 'Ошибка при загрузке файла');
+                }
+            };
+
+            input.click();
+        } catch (error) {
+            setError('Ошибка при загрузке файла');
+        }
+    };
+
+    const handleFileSave = () => {
+        if (!material) return;
+        
+        try {
+            saveToFile(material);
+        } catch (error) {
+            setError('Ошибка при сохранении файла');
+        }
+    };
+
     if (loading) {
         return <div className={styles.loading}>Загрузка...</div>;
     }
@@ -237,11 +279,17 @@ export const EditPage: React.FC = () => {
 
                 <aside className={styles.rightSidebar}>
                     <div className={styles.topActions}>
-                        <button className={styles.actionButton}>
+                        <button 
+                            className={styles.actionButton}
+                            onClick={handleFileUpload}
+                        >
                             <i className="fas fa-upload"></i>
                             Загрузить файл
                         </button>
-                        <button className={styles.actionButton}>
+                        <button 
+                            className={styles.actionButton}
+                            onClick={handleFileSave}
+                        >
                             <i className="fas fa-download"></i>
                             Сохранить файл
                         </button>
