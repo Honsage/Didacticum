@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { UserRole } from '../../types/user.types';
 import * as styles from './signup-form.module.css';
 
 interface SignupFormData {
@@ -10,6 +11,7 @@ interface SignupFormData {
     lastName: string;
     middleName?: string;
     organization?: string;
+    role: UserRole;
 }
 
 interface SignupFormProps {
@@ -40,7 +42,22 @@ const SignupForm: React.FC<SignupFormProps> = ({
             {error && <div className={styles.error}>{error}</div>}
             
             <div className={styles.field}>
-                <label htmlFor="email">Email</label>
+                <RequiredLabel htmlFor="role" text="Роль" />
+                <select
+                    id="role"
+                    value={formData.role}
+                    onChange={e => onInputChange('role')(e.target.value as UserRole)}
+                    required
+                    className={styles.select}
+                >
+                    <option value="">Выберите роль</option>
+                    <option value="student">Ученик</option>
+                    <option value="teacher">Преподаватель</option>
+                </select>
+            </div>
+
+            <div className={styles.field}>
+                <RequiredLabel htmlFor="email" text="Email" />
                 <input
                     id="email"
                     type="email"
