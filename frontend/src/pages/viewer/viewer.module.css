@@ -27,23 +27,30 @@
     color: #13294B;
     font-size: 2em;
     font-weight: 700;
-    margin: 0 0 0.5rem;
+    text-align: center;
+    margin: 1.125rem 0;
 }
 
 .author {
     color: #5FB3EC;
-    font-style: italic;
-    font-size: 1.1em;
+    font-size: 1.5em;
+    font-weight: 600;
+    text-align: center;
     margin: 0;
+}
+
+.metablock {
+    display: flex;
+    flex-direction: column;
+    background: #F3F4F6;
+    border-radius: 6px;
 }
 
 .metadata {
     display: flex;
     gap: 2rem;
     padding: 1rem;
-    background: #F3F4F6;
-    border-radius: 6px;
-    margin-bottom: 2rem;
+    margin-bottom: 0;
 }
 
 .metaItem {
@@ -53,17 +60,23 @@
 
 .metaLabel {
     color: #6B7280;
-    font-size: 0.9em;
+    font-size: 1em;
 }
 
 .metaValue {
     color: #13294B;
     font-weight: 500;
-    font-size: 0.9em;
+    font-size: 1em;
+}
+
+.description {
+    color: #444455;
+    font-size: 1.2rem;
+    padding: 1rem;
 }
 
 .blocks {
-    padding: 1rem 0;
+    padding: 0rem 0;
 }
 
 .homeLink {

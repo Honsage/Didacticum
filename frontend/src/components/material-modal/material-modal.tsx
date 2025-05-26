@@ -92,6 +92,14 @@ const MaterialModal: React.FC<MaterialModalProps> = ({
 
                 <div className={styles.footer}>
                     <div className={styles.actions}>
+                        {onView && (
+                            <button 
+                                className={`${styles.button} ${styles.viewButton}`}
+                                onClick={onView}
+                            >
+                                Просмотр
+                            </button>
+                        )}
                         {onEdit && (
                             <button 
                                 className={`${styles.button} ${styles.editButton}`}
@@ -106,14 +114,6 @@ const MaterialModal: React.FC<MaterialModalProps> = ({
                                 onClick={onDelete}
                             >
                                 Удалить
-                            </button>
-                        )}
-                        {onView && (
-                            <button 
-                                className={`${styles.button} ${styles.viewButton}`}
-                                onClick={onView}
-                            >
-                                Просмотр
                             </button>
                         )}
                     </div>

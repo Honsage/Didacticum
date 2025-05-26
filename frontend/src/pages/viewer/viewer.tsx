@@ -7,15 +7,24 @@ import TextBlock from '../../components/blocks/text-block/text-block';
 import CodeBlock from '../../components/blocks/code-block/code-block';
 import LatexBlock from '../../components/blocks/latex-block/latex-block';
 import ImageBlock from '../../components/blocks/image-block/image-block';
+import { AUTH_NAVIGATION } from '../../constants/navigation';
+import { useDispatch } from '../../hooks/useDispatch';
+import { useSelector } from '../../hooks/useSelector';
+import { logout } from '../../store/slices/user.slice';
 import { materialsService } from '../../services/storage/materials.service';
 import { ContentBlock, Material } from '../../types/material.types';
+import * as headerStyles from '../../components/header/header.module.css';
 import * as styles from './viewer.module.css';
 
 const ViewerPage: React.FC = () => {
+    const dispatch = useDispatch();
     const { id } = useParams<{ id: string }>();
     const [material, setMaterial] = useState<Material | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const { profile, auth } = useSelector(state => state.user);
+
+    const isAuthenticated = !!auth.token && !!auth.expiresAt && Date.now() < auth.expiresAt;
 
     useEffect(() => {
         const loadMaterial = async () => {
@@ -42,6 +51,10 @@ const ViewerPage: React.FC = () => {
 
         loadMaterial();
     }, [id]);
+
+    const handleLogout = () => {
+        dispatch(logout());
+    };
 
     if (loading) {
         return <div>Загрузка...</div>;
@@ -72,34 +85,70 @@ const ViewerPage: React.FC = () => {
         <div className={styles.container}>
             <Header 
                 rightContent={
-                    <Link to="/" className={styles.homeLink}>
-                        На главную
-                    </Link>
+                    <div className={headerStyles.auth}>
+                        {isAuthenticated ? (
+                            <>
+                                <span className={headerStyles.userName}>
+                                    {profile?.firstName}
+                                </span>
+                                <Link 
+                                    to="/profile" 
+                                    className={headerStyles.userAvatar}
+                                    title="Перейти в профиль"
+                                >
+                                    {profile?.firstName?.charAt(0).toUpperCase()}
+                                </Link>
+                                <button 
+                                    onClick={handleLogout}
+                                    className={headerStyles.logoutButton}
+                                >
+                                    Выйти
+                                </button>
+                            </>
+                        ) : (
+                            AUTH_NAVIGATION.map(item => (
+                                <Link 
+                                    key={item.path}
+                                    to={item.path} 
+                                    className={`${headerStyles.authLink} ${
+                                        item.path === '/signup' ? headerStyles.register : ''
+                                    }`}
+                                >
+                                    {item.label}
+                                </Link>
+                            ))
+                        )}
+                    </div>
                 }
             />
             
             <main className={styles.main}>
                 <div className={styles.content}>
                     <header className={styles.header}>
-                        <h1 className={styles.title}>{material.metadata.title}</h1>
                         {material.metadata.author && (
                             <p className={styles.author}>
-                                {material.metadata.author.name}, {material.metadata.author.role}
+                                {material.metadata.author.name}
                             </p>
                         )}
+                        <h1 className={styles.title}>{material.metadata.title}</h1>
                     </header>
 
-                    <div className={styles.metadata}>
-                        <div className={styles.metaItem}>
-                            <span className={styles.metaLabel}>Тип:</span>
-                            <span className={styles.metaValue}>
-                                {material.metadata.type === 'lecture' ? 'Лекция' : 
-                                 material.metadata.type === 'test' ? 'Тест' : 'Практика'}
-                            </span>
+                    <div className={styles.metablock}>
+                        <div className={styles.metadata}>
+                            <div className={styles.metaItem}>
+                                <span className={styles.metaLabel}>Тип:</span>
+                                <span className={styles.metaValue}>
+                                    {material.metadata.type === 'lecture' ? 'Лекция' : 
+                                    material.metadata.type === 'test' ? 'Тест' : 'Практика'}
+                                </span>
+                            </div>
+                            <div className={styles.metaItem}>
+                                <span className={styles.metaLabel}>Продолжительность:</span>
+                                <span className={styles.metaValue}>{material.metadata.duration} мин</span>
+                            </div>
                         </div>
-                        <div className={styles.metaItem}>
-                            <span className={styles.metaLabel}>Продолжительность:</span>
-                            <span className={styles.metaValue}>{material.metadata.duration} мин</span>
+                        <div className={styles.description}>
+                            {material.metadata.description}
                         </div>
                     </div>
 

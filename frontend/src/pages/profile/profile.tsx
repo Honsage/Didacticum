@@ -168,10 +168,13 @@ const ProfilePage: React.FC = () => {
                             <>
                                 {activeTab === 'materials' && profile.role === 'teacher' && (
                                     <div className={styles.materialsGrid}>
-                                        <MaterialCardProfile
-                                            variant="create"
-                                            onCreate={handleCreateMaterial}
-                                        />
+                                        <div className={styles.cardWrapper}>
+                                            <MaterialCardProfile
+                                                variant="create"
+                                                onCreate={handleCreateMaterial}
+                                            />
+                                        </div>
+                                        
                                         {materials.map((material) => (
                                             <div
                                                 key={material.metadata.id}
