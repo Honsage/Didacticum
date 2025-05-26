@@ -1,0 +1,112 @@
+.quizBlock {
+    padding: 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin: 1rem 0;
+    background-color: #fff;
+}
+
+.question {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.answers {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.option:hover {
+    background-color: #f5f5f5;
+}
+
+.option input {
+    margin: 0;
+}
+
+.inputAnswer {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.inputAnswer:focus {
+    outline: none;
+    border-color: #2196f3;
+}
+
+.submitButton, .resetButton {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.submitButton {
+    background-color: #2196f3;
+    color: white;
+}
+
+.submitButton:hover {
+    background-color: #1976d2;
+}
+
+.submitButton:disabled {
+    background-color: #bdbdbd;
+    cursor: not-allowed;
+}
+
+.resetButton {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.resetButton:hover {
+    background-color: #e0e0e0;
+}
+
+.result {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 4px;
+}
+
+.correct {
+    color: #4caf50;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.incorrect {
+    color: #f44336;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.explanation {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: #666;
+} 
