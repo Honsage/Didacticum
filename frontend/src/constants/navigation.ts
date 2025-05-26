@@ -24,7 +24,7 @@ export const AUTH_NAVIGATION: NavigationItem[] = [
         label: 'Войти'
     },
     {
-        path: '/register',
+        path: '/signup',
         label: 'Регистрация'
     }
 ]; 
