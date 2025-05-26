@@ -15,12 +15,10 @@ interface EditableBlockProps {
 
 export const EditableBlockWrapper: React.FC<React.PropsWithChildren<EditableBlockProps>> = ({
     children,
-    block,
     onDelete,
     onMoveUp,
     onMoveDown,
     isDragging,
-    dragHandleProps,
     draggableProps,
     innerRef
 }) => {
@@ -30,14 +28,10 @@ export const EditableBlockWrapper: React.FC<React.PropsWithChildren<EditableBloc
             {...draggableProps}
             className={`${styles.blockWrapper} ${isDragging ? styles.dragging : ''}`}
         >
+            <div className={styles.blockContent}>
+                {children}
+            </div>
             <div className={styles.blockControls}>
-                <button 
-                    className={styles.dragHandle}
-                    {...dragHandleProps}
-                    title="Перетащить блок"
-                >
-                    ⋮⋮
-                </button>
                 <div className={styles.blockActions}>
                     {onMoveUp && (
                         <button 
@@ -65,9 +59,6 @@ export const EditableBlockWrapper: React.FC<React.PropsWithChildren<EditableBloc
                         ×
                     </button>
                 </div>
-            </div>
-            <div className={styles.blockContent}>
-                {children}
             </div>
         </div>
     );

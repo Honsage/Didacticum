@@ -1,13 +1,10 @@
 .editPage {
     display: grid;
-    grid-template-columns: 250px 1fr 250px;
-    grid-template-rows: auto 1fr auto;
-    min-height: 100vh;
-    background-color: #F5F5F5;
-    grid-template-areas:
-        "header header header"
-        "left main right"
-        "footer footer footer";
+    grid-template-columns: minmax(280px, 20%) minmax(auto, 1500px) minmax(200px, 15%);
+    min-height: calc(100vh - 60px);
+    background-color: #f8f9fa;
+    gap: 5%;
+    padding: 0 2rem;
 }
 
 .header {
@@ -65,136 +62,199 @@
 }
 
 .leftSidebar {
-    grid-area: left;
-    background-color: #13294B;
-    padding: 1.5rem;
-    position: fixed;
-    width: 250px;
-    height: calc(100vh - var(--header-height) - var(--footer-height));
+    background-color: #1a2c4e;
+    color: white;
+    padding-top: 2rem;
+    position: sticky;
+    top: 60px;
+    height: calc(100vh - 180px);
     overflow-y: auto;
-    top: var(--header-height);
+    border-radius: 12px;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 .leftSidebar h2 {
-    color: white;
+    font-size: 1.5rem;
+    font-weight: 500;
     margin-bottom: 1rem;
+    text-align: center;
 }
 
 .leftSidebar hr {
-    border-color: rgba(255, 255, 255, 0.1);
-    margin-bottom: 1.5rem;
-}
-
-.rightSidebar {
-    grid-area: right;
-    background-color: white;
-    border-left: 1px solid #F5F5F5;
-    padding: 1.5rem;
-    position: fixed;
-    width: 250px;
-    height: calc(100vh - var(--header-height) - var(--footer-height));
-    overflow-y: auto;
-    top: var(--header-height);
-    right: 0;
-}
-
-.mainContent {
-    grid-area: main;
-    padding: 2rem;
-    margin: 0 250px;
-    min-height: calc(100vh - var(--header-height) - var(--footer-height));
-    background-color: #F5F5F5;
+    border: none;
+    border-top: 1px solid #AAAAAA;
+    margin: 2rem;
 }
 
 .toolButtons {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem;
+    padding: 0;
+    width: 100%;
+    align-items: center;
 }
 
 .toolButtons button {
-    padding: 0.75rem 1rem;
-    border: none;
-    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
     background-color: #F5F5F5;
     color: #444455;
     cursor: pointer;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    transition: all 0.2s ease;
+    text-align: center;
+    font-size: 1.2rem;
+    width: 80%;
+    min-width: min-content;
+    white-space: nowrap;
+    max-width: 300px;
 }
 
 .toolButtons button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-.actionButton {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: none;
-    border-radius: 8px;
-    background-color: #13294B;
-    color: white;
-    cursor: pointer;
-    font-size: 0.9rem;
-    margin-bottom: 0.75rem;
-}
-
-.actionButton:hover {
     background-color: #5fb3ec;
+    color: white;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.toolButtons button i {
+    font-size: 1rem;
+    margin-right: 0.5rem;
+}
+
+.mainContent {
+    padding: 2rem 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.titleWrapper {
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 1.5rem;
 }
 
 .titleInput {
     width: 100%;
     padding: 1rem;
     font-size: 1.5rem;
-    font-weight: 600;
-    border: 1px solid #F5F5F5;
+    font-weight: 500;
+    border: 1px solid transparent;
     border-radius: 8px;
     background-color: white;
-    color: #444455;
-    margin-bottom: 1rem;
+    color: #1a2c4e;
+    transition: all 0.2s ease;
 }
 
 .titleInput:focus {
     outline: none;
     border-color: #5fb3ec;
+    box-shadow: 0 0 0 3px rgba(95, 179, 236, 0.1);
+}
+
+.descriptionWrapper {
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 2rem;
 }
 
 .descriptionInput {
     width: 100%;
+    min-height: 100px;
     padding: 1rem;
     font-size: 1rem;
-    border: 1px solid #F5F5F5;
+    border: 1px solid transparent;
     border-radius: 8px;
     background-color: white;
     color: #444455;
-    margin-bottom: 2rem;
-    min-height: 100px;
     resize: vertical;
+    transition: all 0.2s ease;
 }
 
 .descriptionInput:focus {
     outline: none;
     border-color: #5fb3ec;
+    box-shadow: 0 0 0 3px rgba(95, 179, 236, 0.1);
+}
+
+.rightSidebar {
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: sticky;
+    top: 60px;
+    height: calc(100vh - 180px);
+}
+
+.topActions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.bottomActions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.actionButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.125rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    color: white;
+    background-color: #1a2c4e;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.actionButton:hover {
+    background-color: #5fb3ec;
+}
+
+.actionButton i {
+    font-size: 1.125rem;
+}
+
+.primaryButton {
+    background-color: #1a2c4e;
+    color: white;
+}
+
+.primaryButton:hover {
+    background-color: #5fb3ec;
 }
 
 .loading {
     display: flex;
-    justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    font-size: 1.2rem;
-    color: #444455;
+    justify-content: center;
+    min-height: calc(100vh - 60px);
+    font-size: 1.25rem;
+    color: #1a2c4e;
 }
 
 .error {
     display: flex;
-    justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    font-size: 1.2rem;
-    color: red;
+    justify-content: center;
+    min-height: calc(100vh - 60px);
+    font-size: 1.25rem;
+    color: #ff4444;
 } 

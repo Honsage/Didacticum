@@ -1,82 +1,101 @@
 .blocks {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem;
+    width: 100%;
 }
 
 .blockWrapper {
-    border: 1px solid #F5F5F5;
+    display: flex;
+    border: 1px solid #e0e4e8;
     border-radius: 8px;
     background-color: white;
     transition: all 0.2s ease;
-    position: relative;
+    overflow: hidden;
 }
 
 .blockWrapper.dragging {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     border: 1px dashed #5fb3ec;
     opacity: 0.8;
-    background-color: #F5F5F5;
+    background-color: #f8f9fa;
 }
 
 .blockContent {
-    padding: 1rem;
+    flex: 1;
+    padding: 1.5rem;
+    min-width: 0;
 }
 
 .blockControls {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0.5rem;
+    background-color: #f8f9fa;
+    border-left: 1px solid #e0e4e8;
     gap: 0.5rem;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-}
-
-.blockWrapper:hover .blockControls {
-    opacity: 1;
+    width: 40px;
 }
 
 .dragHandle {
     cursor: move;
-    padding: 0.25rem 0.5rem;
+    padding: 0.25rem;
     border: none;
     background: none;
-    color: #444455;
-    font-size: 1rem;
+    color: #1a2c4e;
+    font-size: 0.875rem;
     line-height: 1;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .dragHandle:hover {
+    background-color: rgba(95, 179, 236, 0.1);
     color: #5fb3ec;
 }
 
 .blockActions {
     display: flex;
-    gap: 0.25rem;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
 }
 
 .actionButton {
-    padding: 0.25rem 0.5rem;
-    border: 1px solid #F5F5F5;
+    padding: 0rem;
+    border: none;
     border-radius: 4px;
-    background-color: white;
-    color: #444455;
+    background: none;
+    color: #1a2c4e;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 1.5rem;
     line-height: 1;
+    transition: all 0.2s ease;
+    width: 40px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .actionButton:hover {
-    background-color: #F5F5F5;
-    border-color: #5fb3ec;
+    background-color: rgba(95, 179, 236, 0.1);
     color: #5fb3ec;
 }
 
+.deleteButton {
+    color: #dc3545;
+}
+
 .deleteButton:hover {
-    background-color: #ff4444;
-    border-color: #ff4444;
-    color: white;
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
 }
 
 /* Стили для конкретных типов блоков */
@@ -194,6 +213,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    font-size: 1rem;
 }
 
 .headingLevel select {
@@ -214,6 +234,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    font-size: 1rem;
 }
 
 .textFormat select {
@@ -309,6 +330,7 @@
 .field label {
     font-weight: 500;
     color: #333;
+    font-size: 1.125rem;
 }
 
 .field textarea,

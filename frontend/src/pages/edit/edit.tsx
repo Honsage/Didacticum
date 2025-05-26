@@ -180,51 +180,55 @@ export const EditPage: React.FC = () => {
                     <div className={styles.toolButtons}>
                         <button onClick={() => handleAddBlock('heading')}>
                             <i className="fas fa-heading"></i>
-                            Заголовок
+                            + Заголовок
                         </button>
                         <button onClick={() => handleAddBlock('text')}>
                             <i className="fas fa-paragraph"></i>
-                            Параграф
-                        </button>
-                        <button onClick={() => handleAddBlock('image')}>
-                            <i className="fas fa-image"></i>
-                            Изображение
+                            + Параграф
                         </button>
                         <button onClick={() => handleAddBlock('latex')}>
                             <i className="fas fa-square-root-alt"></i>
-                            LaTeX
+                            + LaTeX
                         </button>
                         <button onClick={() => handleAddBlock('quiz')}>
                             <i className="fas fa-question-circle"></i>
-                            Тест
+                            + Тест
+                        </button>
+                        <button onClick={() => handleAddBlock('image')}>
+                            <i className="fas fa-image"></i>
+                            + Изображение
                         </button>
                         <button onClick={() => handleAddBlock('video')}>
                             <i className="fas fa-video"></i>
-                            Видео
+                            + Видео
                         </button>
                     </div>
                 </aside>
 
                 <main className={styles.mainContent}>
-                    <input
-                        type="text"
-                        value={material.metadata.title}
-                        onChange={(e) => setMaterial({
-                            ...material,
-                            metadata: { ...material.metadata, title: e.target.value }
-                        })}
-                        placeholder="Заголовок материала"
-                        className={styles.titleInput}
-                    />
-                    <textarea
-                        value={material.metadata.description}
-                        onChange={(e) => setMaterial({
-                            ...material,
-                            metadata: { ...material.metadata, description: e.target.value }
-                        })}
-                        placeholder="Введите краткое описание данного материала..."
-                        className={styles.descriptionInput}
-                    />
+                    <div className={styles.titleWrapper}>
+                        <input
+                            type="text"
+                            value={material.metadata.title}
+                            onChange={(e) => setMaterial({
+                                ...material,
+                                metadata: { ...material.metadata, title: e.target.value }
+                            })}
+                            placeholder="Заголовок материала"
+                            className={styles.titleInput}
+                        />
+                    </div>
+                    <div className={styles.descriptionWrapper}>
+                        <textarea
+                            value={material.metadata.description}
+                            onChange={(e) => setMaterial({
+                                ...material,
+                                metadata: { ...material.metadata, description: e.target.value }
+                            })}
+                            placeholder="Введите краткое описание данного материала..."
+                            className={styles.descriptionInput}
+                        />
+                    </div>
                     <BlockManager
                         blocks={material.blocks || []}
                         onChange={handleBlocksChange}
@@ -232,28 +236,33 @@ export const EditPage: React.FC = () => {
                 </main>
 
                 <aside className={styles.rightSidebar}>
-                    <button className={styles.actionButton}>
-                        <i className="fas fa-upload"></i>
-                        Загрузить файл
-                    </button>
-                    <button className={styles.actionButton}>
-                        <i className="fas fa-download"></i>
-                        Сохранить файл
-                    </button>
-                    <button 
-                        className={styles.actionButton}
-                        onClick={handleSave}
-                    >
-                        <i className="fas fa-save"></i>
-                        Сохранить изменения
-                    </button>
-                    <button 
-                        className={styles.actionButton}
-                        onClick={handlePreview}
-                    >
-                        <i className="fas fa-eye"></i>
-                        Просмотр
-                    </button>
+                    <div className={styles.topActions}>
+                        <button className={styles.actionButton}>
+                            <i className="fas fa-upload"></i>
+                            Загрузить файл
+                        </button>
+                        <button className={styles.actionButton}>
+                            <i className="fas fa-download"></i>
+                            Сохранить файл
+                        </button>
+                    </div>
+                    
+                    <div className={styles.bottomActions}>
+                        <button 
+                            className={`${styles.actionButton} ${styles.primaryButton}`}
+                            onClick={handleSave}
+                        >
+                            <i className="fas fa-save"></i>
+                            Сохранить изменения
+                        </button>
+                        <button 
+                            className={`${styles.actionButton} ${styles.primaryButton}`}
+                            onClick={handlePreview}
+                        >
+                            <i className="fas fa-eye"></i>
+                            Просмотр
+                        </button>
+                    </div>
                 </aside>
             </div>
             <Footer />
