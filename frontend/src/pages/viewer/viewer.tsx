@@ -7,14 +7,16 @@ import TextBlock from '../../components/blocks/text-block/text-block';
 import CodeBlock from '../../components/blocks/code-block/code-block';
 import LatexBlock from '../../components/blocks/latex-block/latex-block';
 import ImageBlock from '../../components/blocks/image-block/image-block';
+import { QuizBlock } from '../../components/blocks/quiz-block/quiz-block';
+import { VideoBlock } from '../../components/blocks/video-block/video-block';
 import { AUTH_NAVIGATION } from '../../constants/navigation';
 import { useDispatch } from '../../hooks/useDispatch';
 import { useSelector } from '../../hooks/useSelector';
 import { logout } from '../../store/slices/user.slice';
 import { materialsService } from '../../services/storage/materials.service';
 import { ContentBlock, Material } from '../../types/material.types';
-import * as headerStyles from '../../components/header/header.module.css';
 import * as styles from './viewer.module.css';
+import * as headerStyles from '../../components/header/header.module.css';
 
 const ViewerPage: React.FC = () => {
     const dispatch = useDispatch();
@@ -76,6 +78,10 @@ const ViewerPage: React.FC = () => {
                 return <LatexBlock key={block.id} block={block} />;
             case 'image':
                 return <ImageBlock key={block.id} block={block} />;
+            case 'quiz':
+                return <QuizBlock key={block.id} block={block} />;
+            case 'video':
+                return <VideoBlock key={block.id} block={block} />;
             default:
                 return null;
         }

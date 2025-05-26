@@ -81,13 +81,25 @@ export interface QuizBlock extends BaseBlock {
     };
 }
 
+export interface VideoBlock extends BaseBlock {
+    type: 'video';
+    content: {
+        url: string;
+        title?: string;
+        description?: string;
+        startTime?: number; // время начала в секундах
+        provider: 'youtube' | 'vimeo'; // тип видео-хостинга
+    };
+}
+
 export type ContentBlock = 
     | HeadingBlock 
     | TextBlock 
     | CodeBlock
     | LatexBlock 
     | ImageBlock 
-    | QuizBlock;
+    | QuizBlock
+    | VideoBlock;
 
 export interface Material {
     metadata: MaterialMetadata;

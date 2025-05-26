@@ -1,4 +1,4 @@
-import { ContentBlock, HeadingBlock, TextBlock, LatexBlock, ImageBlock } from '../types/material.types';
+import { ContentBlock, HeadingBlock, TextBlock, LatexBlock, ImageBlock, QuizBlock, VideoBlock } from '../types/material.types';
 
 export const createBlock = (type: ContentBlock['type']): ContentBlock => {
     const baseBlock = {
@@ -42,6 +42,27 @@ export const createBlock = (type: ContentBlock['type']): ContentBlock => {
                     url: '',
                     alt: '',
                     caption: ''
+                }
+            };
+        case 'quiz':
+            return {
+                ...baseBlock,
+                type: 'quiz',
+                content: {
+                    question: '',
+                    type: 'single',
+                    options: [],
+                    correctAnswer: ''
+                }
+            };
+        case 'video':
+            return {
+                ...baseBlock,
+                type: 'video',
+                content: {
+                    url: '',
+                    provider: 'youtube',
+                    startTime: 0
                 }
             };
         default:

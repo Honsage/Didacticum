@@ -1,10 +1,12 @@
 import React from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
-import { ContentBlock, HeadingBlock, TextBlock, LatexBlock, ImageBlock } from '../../types/material.types';
+import { ContentBlock, HeadingBlock, TextBlock, LatexBlock, ImageBlock, QuizBlock, VideoBlock } from '../../types/material.types';
 import { EditableHeadingBlock } from './heading-block';
 import { EditableTextBlock } from './text-block';
 import { EditableLatexBlock } from './latex-block';
 import { EditableImageBlock } from './image-block';
+import { EditableQuizBlock } from './quiz-block';
+import { EditableVideoBlock } from './video-block';
 import * as styles from './edit-blocks.module.css';
 
 interface BlockManagerProps {
@@ -116,9 +118,27 @@ export const BlockManager: React.FC<BlockManagerProps> = ({
                         onChange={(updatedBlock) => handleBlockChange(index, updatedBlock)}
                     />
                 );
+            case 'quiz':
+                return (
+                    <EditableQuizBlock
+                        {...commonProps}
+                        block={block as QuizBlock}
+                        onChange={(updatedBlock) => handleBlockChange(index, updatedBlock)}
+                    />
+                );
+            case 'video':
+                return (
+                    <EditableVideoBlock
+                        {...commonProps}
+                        block={block as VideoBlock}
+                        onChange={(updatedBlock) => handleBlockChange(index, updatedBlock)}
+                    />
+                );
             default:
                 return (
-                    <div>Неизвестный тип блока</div>
+                    <div className={styles.unknownBlock}>
+                        Неизвестный тип блока: {block.type}
+                    </div>
                 );
         }
     };

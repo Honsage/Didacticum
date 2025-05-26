@@ -290,4 +290,124 @@
 
 .imageReplace:hover {
     text-decoration: underline;
-} 
+}
+
+/* Quiz Block Styles */
+.quizBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.field label {
+    font-weight: 500;
+    color: #333;
+}
+
+.field textarea,
+.field input[type="text"],
+.field select {
+    padding: 0.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 100%;
+}
+
+.field textarea:focus,
+.field input[type="text"]:focus,
+.field select:focus {
+    outline: none;
+    border-color: #2196f3;
+}
+
+.optionsList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.optionItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+.optionLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.addOption {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.addOption input {
+    flex: 1;
+}
+
+.addButton,
+.removeButton {
+    padding: 0.25rem 0.75rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.addButton {
+    background-color: #2196f3;
+    color: white;
+}
+
+.addButton:hover {
+    background-color: #1976d2;
+}
+
+.addButton:disabled {
+    background-color: #bdbdbd;
+    cursor: not-allowed;
+}
+
+.removeButton {
+    background-color: #f44336;
+    color: white;
+}
+
+.removeButton:hover {
+    background-color: #d32f2f;
+}
+
+.unknownBlock {
+    padding: 1rem;
+    background-color: #ffebee;
+    border: 1px solid #ffcdd2;
+    border-radius: 4px;
+    color: #c62828;
+    text-align: center;
+    font-weight: 500;
+}
+
+.videoBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}

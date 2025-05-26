@@ -194,6 +194,14 @@ export const EditPage: React.FC = () => {
                             <i className="fas fa-square-root-alt"></i>
                             LaTeX
                         </button>
+                        <button onClick={() => handleAddBlock('quiz')}>
+                            <i className="fas fa-question-circle"></i>
+                            Тест
+                        </button>
+                        <button onClick={() => handleAddBlock('video')}>
+                            <i className="fas fa-video"></i>
+                            Видео
+                        </button>
                     </div>
                 </aside>
 
